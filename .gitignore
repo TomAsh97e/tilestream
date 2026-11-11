@@ -1,0 +1,12 @@
+/build/
+/.cache/
+/.pytest_cache/
+/.venv/
+/datasets/downloads/
+compile_commands.json
+*.pyc
+__pycache__/
+# Profiler reports record the whole process environment of the machine they were taken on.
+*.nsys-rep
+*.ncu-rep
+*.sqlite

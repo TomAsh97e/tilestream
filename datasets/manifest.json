@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-10-19",
+  "split_policy": {
+    "frozen_before_optimization": true,
+    "tuning": "Synthetic constant, increasing-ramp, edge, and smooth-noise cases plus the CT image.",
+    "evaluation": "Synthetic decreasing-ramp, checkerboard, and noise cases plus the Jacksboro SRTM elevation field.",
+    "rule": "Do not move datasets or patterns between splits after optimization begins. Any repeated or tiled source image must be labeled synthetic_stress and cannot count as a new real dataset."
+  },
+  "synthetic_suite": {
+    "generator": "datasets/generate.py",
+    "index": "datasets/generated-cases.json",
+    "index_sha256": "9448c369c7a739a84619170e80fe083a27525e12d7a41bbf70376d834e7e64f3",
+    "seed": 2026517,
+    "bit_generator": "NumPy PCG64",
+    "numpy_version": "2.2.6",
+    "types": ["uint16", "float32"],
+    "patterns": ["constant", "ramp_up", "ramp_down", "edges", "checkerboard", "noise", "smooth_noise"],
+    "shapes": [[1, 1], [31, 31], [32, 32], [33, 33], [127, 127], [128, 128], [129, 129], [31, 127], [31, 128], [31, 129], [32, 127], [32, 128], [32, 129], [33, 127], [33, 128], [33, 129], [35, 130]],
+    "case_count": 238
+  },
+  "datasets": [
+    {
+      "id": "synthetic-uint16-smooth-noise-33x129",
+      "kind": "synthetic_fixture",
+      "split": "tuning",
+      "path": "datasets/fixtures/synthetic_uint16_smooth_noise_33x129.npy",
+      "dtype": "uint16",
+      "height": 33,
+      "width": 129,
+      "seed": 12294212647099548940,
+      "file_sha256": "0b8a0c0a13ebd83f7544a799d95d451636dd0462e91d9981fd55fdb38d69350a",
+      "content_sha256": "830680d52b2b3fdb32e05db1636b53b595ad6e0e86ed1941467e245f49f3cce0",
+      "conversion": "Generated directly as little-endian uint16 by datasets/generate.py."
+    },
+    {
+      "id": "synthetic-float32-checkerboard-35x130",
+      "kind": "synthetic_fixture",
+      "split": "evaluation",
+      "path": "datasets/fixtures/synthetic_float32_checkerboard_35x130.npy",
+      "dtype": "float32",
+      "height": 35,
+      "width": 130,
+      "seed": 17567302693739540889,
+      "file_sha256": "c13d756e8935d5ad84c034197b5aec36c14f0fa4609b3f28252c7cbef885f52c",
+      "content_sha256": "59710fdaca2c05f4af8f2ba8c96a81746eb480b8d44cf4d85bab8934f66ebc83",
+      "conversion": "Generated directly as little-endian float32 by datasets/generate.py."
+    },
+    {
+      "id": "pydicom-ct-small-uint16",
+      "kind": "real_image",
+      "split": "tuning",
+      "path": "datasets/fixtures/ct_small_uint16.npy",
+      "dtype": "uint16",
+      "height": 128,
+      "width": 128,
+      "seed": null,
+      "file_sha256": "c46d2a232d3083fa7673b0454e522964c535c7b929f3c1a6dd2cf5bdb1ba70d8",
+      "content_sha256": "832511cbec30a7a30ec9d71c8c51b140ad1ece428931c64a1848aaccb1b22771",
+      "source": {
+        "name": "pydicom CT_small.dcm deidentified CT test image",
+        "url": "https://raw.githubusercontent.com/pydicom/pydicom/v3.0.1/src/pydicom/data/test_files/CT_small.dcm",
+        "version": "pydicom v3.0.1",
+        "sha256": "3dd31e5cc835b3f2cdd46c9da1982f59251e78518fefa8163d914631c66437d6",
+        "license": "pydicom license, MIT for this repository distribution",
+        "license_path": "datasets/licenses/pydicom-LICENSE.txt",
+        "license_url": "https://github.com/pydicom/pydicom/blob/v3.0.1/LICENSE"
+      },
+      "conversion": "Read PixelData with pydicom 3.0.1, verify one 128x128 plane and stored values in [0, 65535], then cast stored int16 values to little-endian uint16. RescaleSlope and RescaleIntercept are not applied."
+    },
+    {
+      "id": "jacksboro-srtm-dem-float32",
+      "kind": "real_field",
+      "split": "evaluation",
+      "path": "datasets/fixtures/jacksboro_dem_float32.npy",
+      "dtype": "float32",
+      "height": 344,
+      "width": 403,
+      "seed": null,
+      "file_sha256": "8eae8c6b2536cd9a741ee4fe9b1fb7f7160160457eea39e2738802fd3eb799fa",
+      "content_sha256": "87ebf2ac6e32811a73cbed965c015ee7e1abd72aa044ae9f3ac60dbd70de09b9",
+      "source": {
+        "name": "Jacksboro fault SRTM digital elevation model distributed with Matplotlib",
+        "url": "https://raw.githubusercontent.com/matplotlib/matplotlib/v3.9.2/lib/matplotlib/mpl-data/sample_data/jacksboro_fault_dem.npz",
+        "version": "Matplotlib v3.9.2",
+        "sha256": "d493f50a33e82a4420494c54d1fca1539d177bdc27ab190bc5fe6e92f62fb637",
+        "origin": "NASA Shuttle Radar Topography Mission data",
+        "license": "SRTM is US government public-domain data; this sample distribution is covered by the Matplotlib license.",
+        "license_path": "datasets/licenses/matplotlib-LICENSE.txt",
+        "license_url": "https://github.com/matplotlib/matplotlib/blob/v3.9.2/LICENSE/LICENSE",
+        "origin_policy_url": "https://www.earthdata.nasa.gov/engage/open-data-services-and-software/data-and-information-policy"
+      },
+      "conversion": "Load the elevation member without pickle, verify its 344x403 shape, and cast int16 elevations to little-endian float32. No resampling, normalization, or missing-value replacement is performed."
+    }
+  ]
+}

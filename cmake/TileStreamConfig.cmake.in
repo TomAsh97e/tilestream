@@ -1,0 +1,9 @@
+@PACKAGE_INIT@
+
+include(CMakeFindDependencyMacro)
+if(@TILESTREAM_CONFIG_NEEDS_CUDA@)
+    find_dependency(CUDAToolkit 13.0)
+endif()
+
+include("${CMAKE_CURRENT_LIST_DIR}/TileStreamTargets.cmake")
+check_required_components(TileStream)

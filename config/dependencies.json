@@ -1,0 +1,28 @@
+{
+  "policy": "Use system packages from Linux Mint 22.1 or the selected CUDA toolkit. Record and test exact installed versions before publishing results.",
+  "tested": {
+    "cmake": "3.28.3",
+    "ninja": "1.11.1",
+    "pybind11": "2.11.1",
+    "cuda_toolkit": "13.0.88",
+    "cccl": "3.0.1",
+    "cub": "3.0.1",
+    "libtiff": "4.5.1",
+    "libzstd": "1.5.5",
+    "numpy": "2.2.6",
+    "pydicom": "3.0.1",
+    "pytest": "8.3.5"
+  },
+  "not_installed": {
+    "googletest": "Integration is deferred until the first GoogleTest-based codec tests.",
+    "nvcomp": "The adapter remains disabled until a compatible release is installed and recorded."
+  },
+  "constraints": {
+    "cmake_minimum": "3.25.0",
+    "cxx_standard": "17",
+    "pybind11_exact": "2.11.1",
+    "cuda_minimum": "13.0",
+    "cuda_architectures": [89],
+    "external_cccl_allowed": false
+  }
+}

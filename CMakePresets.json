@@ -1,0 +1,74 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 25,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "TILESTREAM_BUILD_TESTS": "ON",
+        "TILESTREAM_BUILD_BENCHMARKS": "ON",
+        "TILESTREAM_BUILD_PYTHON": "ON",
+        "TILESTREAM_ENABLE_NVCOMP": "OFF"
+      }
+    },
+    {
+      "name": "cpu-only",
+      "displayName": "CPU-only release",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "TILESTREAM_ENABLE_CUDA": "OFF"
+      }
+    },
+    {
+      "name": "cuda-debug",
+      "displayName": "CUDA debug",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CUDA_ARCHITECTURES": "89",
+        "TILESTREAM_ENABLE_CUDA": "ON"
+      }
+    },
+    {
+      "name": "cuda-release",
+      "displayName": "CUDA release",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CUDA_ARCHITECTURES": "89",
+        "TILESTREAM_ENABLE_CUDA": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    { "name": "cpu-only", "configurePreset": "cpu-only" },
+    { "name": "cuda-debug", "configurePreset": "cuda-debug" },
+    { "name": "cuda-release", "configurePreset": "cuda-release" }
+  ],
+  "testPresets": [
+    {
+      "name": "cpu-only",
+      "configurePreset": "cpu-only",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "cuda-debug",
+      "configurePreset": "cuda-debug",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "cuda-release",
+      "configurePreset": "cuda-release",
+      "output": { "outputOnFailure": true }
+    }
+  ]
+}
