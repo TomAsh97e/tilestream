@@ -491,11 +491,11 @@ void split_windows(const std::vector<std::uint64_t> &tiles, std::vector<WindowIm
 }
 
 template <typename T>
-void copy_table(std::vector<std::uint8_t> &staging, std::uint64_t offset,
-                const std::vector<T> &table) {
-    if (!table.empty()) {
-        std::memcpy(staging.data() + offset, table.data(), table.size() * sizeof(T));
-    }
+bool upload_table(void *storage, std::uint64_t offset, const std::vector<T> &table,
+                  cudaStream_t stream) {
+    return table.empty() ||
+           cudaMemcpyAsync(static_cast<std::uint8_t *>(storage) + offset, table.data(),
+                           table.size() * sizeof(T), cudaMemcpyHostToDevice, stream) == cudaSuccess;
 }
 
 Status build(const BatchRequest &request, Plan &plan, cudaStream_t stream) {
@@ -576,7 +576,6 @@ Status build(const BatchRequest &request, Plan &plan, cudaStream_t stream) {
         !place(draft.first_rows.size(), sizeof(std::uint64_t), rows_at)) {
         return Status::size_overflow;
     }
-    std::vector<std::uint8_t> staging(static_cast<std::size_t>(total));
     if (cudaMallocAsync(&plan.storage, static_cast<std::size_t>(total), stream) != cudaSuccess) {
         plan.storage = nullptr;
         return cuda_failure();
@@ -589,11 +588,6 @@ Status build(const BatchRequest &request, Plan &plan, cudaStream_t stream) {
         draft.images[i].tiles = tiles + draft.tile_begin[i];
         draft.images[i].segments = segments + draft.segment_begin[i];
     }
-    copy_table(staging, images_at, draft.images);
-    copy_table(staging, tiles_at, draft.tile_records);
-    copy_table(staging, segments_at, draft.segment_records);
-    copy_table(staging, entries_at, entries);
-    copy_table(staging, rows_at, draft.first_rows);
     plan.images = reinterpret_cast<const DeviceImage *>(device + images_at);
     plan.first_rows = reinterpret_cast<const std::uint64_t *>(device + rows_at);
     plan.total_rows = draft.total_rows;
@@ -616,8 +610,12 @@ Status build(const BatchRequest &request, Plan &plan, cudaStream_t stream) {
     if (status != Status::success) {
         return status;
     }
-    if (cudaMemcpyAsync(plan.storage, staging.data(), staging.size(), cudaMemcpyHostToDevice,
-                        stream) != cudaSuccess ||
+    // The tables are copied straight from the draft, which outlives the copies.
+    if (!upload_table(plan.storage, images_at, draft.images, stream) ||
+        !upload_table(plan.storage, tiles_at, draft.tile_records, stream) ||
+        !upload_table(plan.storage, segments_at, draft.segment_records, stream) ||
+        !upload_table(plan.storage, entries_at, entries, stream) ||
+        !upload_table(plan.storage, rows_at, draft.first_rows, stream) ||
         cudaStreamSynchronize(stream) != cudaSuccess) {
         return cuda_failure();
     }

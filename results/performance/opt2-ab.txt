@@ -1,0 +1,16 @@
+tsc_file/uint16/4096                                   6.4593 ->   5.5934 ms  -13.4%  rounds before 6.1781-6.5046 after 5.3476-5.6024
+tsc_file/uint16/4096/stage:parse_prepare               3.7763 ->   2.9713 ms  -21.3%  rounds before 3.7209-3.8656 after 2.7943-3.0327
+archive_roi/uint16/4096/roi1024x4                      1.0674 ->   0.9957 ms   -6.7%  rounds before 1.0594-1.1593 after 0.9937-0.9983
+archive_roi/uint16/4096/roi1024x4/stage:prepare        0.3805 ->   0.3876 ms   +1.8%  rounds before 0.3732-0.3830 after 0.3822-0.4467
+archive_roi/uint16/4096/roi256x1                       0.0536 ->   0.0549 ms   +2.5%  rounds before 0.0527-0.0544 after 0.0543-0.0556
+archive_roi/uint16/4096/roi256x1/stage:prepare         0.0149 ->   0.0164 ms   +9.9%  rounds before 0.0148-0.0151 after 0.0163-0.0169
+archive_roi/uint16/4096/full                           4.8100 ->   3.4792 ms  -27.7%  rounds before 4.8082-4.8768 after 3.4253-3.4820
+archive_roi/uint16/4096/full/stage:prepare             2.4883 ->   1.1674 ms  -53.1%  rounds before 2.4803-2.5073 after 1.1408-1.1833
+tsc_file/float32/4096                                 15.4449 ->  14.8432 ms   -3.9%  rounds before 15.4425-15.5578 after 14.7227-15.1115
+tsc_file/float32/4096/stage:parse_prepare              7.2347 ->   6.4065 ms  -11.4%  rounds before 7.1376-7.2415 after 6.4001-6.4263
+archive_roi/float32/4096/roi1024x4                     2.3403 ->   2.2289 ms   -4.8%  rounds before 2.3325-2.3721 after 2.2277-2.2315
+archive_roi/float32/4096/roi1024x4/stage:prepare       0.3810 ->   0.3884 ms   +1.9%  rounds before 0.3758-0.3813 after 0.3870-0.4610
+archive_roi/float32/4096/roi256x1                      0.0775 ->   0.0790 ms   +2.0%  rounds before 0.0772-0.0781 after 0.0790-0.0791
+archive_roi/float32/4096/roi256x1/stage:prepare        0.0145 ->   0.0158 ms   +9.1%  rounds before 0.0144-0.0147 after 0.0158-0.0161
+archive_roi/float32/4096/full                          9.8424 ->   8.2384 ms  -16.3%  rounds before 9.6147-9.8508 after 8.2223-8.3979
+archive_roi/float32/4096/full/stage:prepare            2.5466 ->   1.1522 ms  -54.8%  rounds before 2.5202-2.5816 after 1.1304-1.2049
