@@ -1,0 +1,8 @@
+memcheck encoder: ok (========= ERROR SUMMARY: 0 errors)
+memcheck decoder: ok (========= ERROR SUMMARY: 0 errors)
+memcheck api: ok (========= ERROR SUMMARY: 0 errors)
+memcheck calibration: FAILED, see results/performance/compute-sanitizer-first/memcheck-calibration.log
+memcheck numerics: FAILED, see results/performance/compute-sanitizer-first/memcheck-numerics.log
+memcheck robustness: ok (========= ERROR SUMMARY: 0 errors)
+racecheck encoder: ok (========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings))
+racecheck decoder: ok (========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings))

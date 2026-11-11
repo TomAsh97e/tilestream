@@ -1,0 +1,1528 @@
+========= COMPUTE-SANITIZER
+[==========] Running 3 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 3 tests from CudaNumerics
+[ RUN      ] CudaNumerics.LibraryMatchesHostSemanticsBitwise
+[       OK ] CudaNumerics.LibraryMatchesHostSemanticsBitwise (198 ms)
+[ RUN      ] CudaNumerics.DeviceResultsWithinBounds
+[       OK ] CudaNumerics.DeviceResultsWithinBounds (89 ms)
+[ RUN      ] CudaNumerics.SpecialValueContract
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (16,0,0) in block (0,0,0)
+=========     Access to 0x7af146800040 is out of bounds
+=========     and is 1 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (17,0,0) in block (0,0,0)
+=========     Access to 0x7af146800044 is out of bounds
+=========     and is 5 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (18,0,0) in block (0,0,0)
+=========     Access to 0x7af146800048 is out of bounds
+=========     and is 9 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (19,0,0) in block (0,0,0)
+=========     Access to 0x7af14680004c is out of bounds
+=========     and is 13 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (20,0,0) in block (0,0,0)
+=========     Access to 0x7af146800050 is out of bounds
+=========     and is 17 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (21,0,0) in block (0,0,0)
+=========     Access to 0x7af146800054 is out of bounds
+=========     and is 21 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (22,0,0) in block (0,0,0)
+=========     Access to 0x7af146800058 is out of bounds
+=========     and is 25 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (23,0,0) in block (0,0,0)
+=========     Access to 0x7af14680005c is out of bounds
+=========     and is 29 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (24,0,0) in block (0,0,0)
+=========     Access to 0x7af146800060 is out of bounds
+=========     and is 33 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (25,0,0) in block (0,0,0)
+=========     Access to 0x7af146800064 is out of bounds
+=========     and is 37 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (26,0,0) in block (0,0,0)
+=========     Access to 0x7af146800068 is out of bounds
+=========     and is 41 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (27,0,0) in block (0,0,0)
+=========     Access to 0x7af14680006c is out of bounds
+=========     and is 45 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (28,0,0) in block (0,0,0)
+=========     Access to 0x7af146800070 is out of bounds
+=========     and is 49 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (29,0,0) in block (0,0,0)
+=========     Access to 0x7af146800074 is out of bounds
+=========     and is 53 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (30,0,0) in block (0,0,0)
+=========     Access to 0x7af146800078 is out of bounds
+=========     and is 57 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x20d0
+=========     by thread (31,0,0) in block (0,0,0)
+=========     Access to 0x7af14680007c is out of bounds
+=========     and is 61 bytes after the nearest allocation at 0x7af146800000 of size 64 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x44950] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x44be9] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x43703] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x43911] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:63 [0x11997] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+./tests/cuda_numerics_test.cpp:66: Failure
+Expected equality of these values:
+  cudaStreamSynchronize(nullptr)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:185: Failure
+Expected equality of these values:
+  cudaMemcpy(records.data(), results.get(), count * sizeof(DeviceResult), cudaMemcpyDeviceToHost)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:52: Failure
+Expected equality of these values:
+  cudaMemcpy(bytes.data(), data, bytes.size(), cudaMemcpyDeviceToHost)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, NaN offset: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, NaN gain: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, 0 * inf: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, (1 - inf) * 1: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, (1 + inf) * -1: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, (3 - 1) * inf: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, (1 - 3) * inf: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, (5 - 5) * -3 is -0: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, (+0 - -0) * -1 is -0: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, (3 - 1) * -0: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, (1 - 3) * +0: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, subnormal gain is not flushed: 0
+
+./tests/cuda_numerics_test.cpp:156: Failure
+Value of: numerics::same(values[i], as_float(rows[i].expected))
+  Actual: false
+Expected: true
+uint16 fused, 65535 - 0.5 is exact: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:45: Failure
+Expected equality of these values:
+  cudaMemcpy(device.get(), bytes.data(), bytes.size(), cudaMemcpyHostToDevice)
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_test_support.h:36: Failure
+Expected equality of these values:
+  cudaMalloc(&data, static_cast<std::size_t>(bytes))
+    Which is: 719
+  cudaSuccess
+    Which is: 0
+
+./tests/cuda_numerics_test.cpp:54: Failure
+Expected equality of these values:
+  cuda::prepare_batch({operation, items.data(), items.size(), {}}, plan, nullptr)
+    Which is: 4-byte object <01-00 00-00>
+  Status::success
+    Which is: 4-byte object <00-00 00-00>
+
+./tests/cuda_numerics_test.cpp:154: Failure
+Expected equality of these values:
+  values.size()
+    Which is: 0
+  rows.size()
+    Which is: 42
+scalars
+
+[  FAILED  ] CudaNumerics.SpecialValueContract (145 ms)
+[----------] 3 tests from CudaNumerics (433 ms total)
+
+[----------] Global test environment tear-down
+[==========] 3 tests from 1 test suite ran. (433 ms total)
+[  PASSED  ] 2 tests.
+[  FAILED  ] 1 test, listed below:
+[  FAILED  ] CudaNumerics.SpecialValueContract
+
+ 1 FAILED TEST
+========= Leaked 64 bytes at 0x7af146800000
+=========     Saved host backtrace up to driver entry point at allocation time
+=========         Host Frame: cuMemAlloc_v2 [0x32b99f] in libcuda.so.1
+=========         Host Frame:  [0x41b5d] in libcudart.so.13
+=========         Host Frame:  [0x146f2] in libcudart.so.13
+=========         Host Frame: cudaMalloc [0x50c56] in libcudart.so.13
+=========         Host Frame: test::device_alloc(unsigned long, int) [0x1602d] in tilestream_cuda_numerics_tests
+=========         Host Frame: test::upload(std::vector<unsigned char, std::allocator<unsigned char> > const&) [0x16340] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::upload_maps(numerics::Case const&) in cuda_numerics_test.cpp:36 [0x11508] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:83 [0x12076] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Leaked 68 bytes at 0x7af146800200
+=========     Saved host backtrace up to driver entry point at allocation time
+=========         Host Frame: cuMemAlloc_v2 [0x32b99f] in libcuda.so.1
+=========         Host Frame:  [0x41b5d] in libcudart.so.13
+=========         Host Frame:  [0x146f2] in libcudart.so.13
+=========         Host Frame: cudaMalloc [0x50c56] in libcudart.so.13
+=========         Host Frame: test::device_alloc(unsigned long, int) [0x1602d] in tilestream_cuda_numerics_tests
+=========         Host Frame: test::upload(std::vector<unsigned char, std::allocator<unsigned char> > const&) [0x16340] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::upload_maps(numerics::Case const&) in cuda_numerics_test.cpp:37 [0x11542] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:83 [0x12076] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Leaked 60 bytes at 0x7af146800400
+=========     Saved host backtrace up to driver entry point at allocation time
+=========         Host Frame: cuMemAlloc_v2 [0x32b99f] in libcuda.so.1
+=========         Host Frame:  [0x41b5d] in libcudart.so.13
+=========         Host Frame:  [0x146f2] in libcudart.so.13
+=========         Host Frame: cudaMalloc [0x50c56] in libcudart.so.13
+=========         Host Frame: test::device_alloc(unsigned long, int) [0x1602d] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:86 [0x120f2] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Leaked 112 bytes at 0x7af146800600
+=========     Saved host backtrace up to driver entry point at allocation time
+=========         Host Frame: cuMemAlloc_v2 [0x32b99f] in libcuda.so.1
+=========         Host Frame:  [0x41b5d] in libcudart.so.13
+=========         Host Frame:  [0x146f2] in libcudart.so.13
+=========         Host Frame: cudaMalloc [0x50c56] in libcudart.so.13
+=========         Host Frame: test::device_alloc(unsigned long, int) [0x1602d] in tilestream_cuda_numerics_tests
+=========         Host Frame: test::upload(std::vector<unsigned char, std::allocator<unsigned char> > const&) [0x16340] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:97 [0x124ee] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Leaked 17 664 bytes at 0x7af146800800
+=========     Saved host backtrace up to driver entry point at allocation time
+=========         Host Frame: cuMemAlloc_v2 [0x32b99f] in libcuda.so.1
+=========         Host Frame:  [0x41b5d] in libcudart.so.13
+=========         Host Frame:  [0x146f2] in libcudart.so.13
+=========         Host Frame: cudaMalloc [0x50c56] in libcudart.so.13
+=========         Host Frame: test::device_alloc(unsigned long, int) [0x1602d] in tilestream_cuda_numerics_tests
+=========         Host Frame: test::workspace_for(tilestream::cuda::BatchPlan const&) [0x1710f] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:59 [0x118c5] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Leaked 16 bytes at 0x7af146804e00
+=========     Saved host backtrace up to driver entry point at allocation time
+=========         Host Frame: cuMemAlloc_v2 [0x32b99f] in libcuda.so.1
+=========         Host Frame:  [0x41b5d] in libcudart.so.13
+=========         Host Frame:  [0x146f2] in libcudart.so.13
+=========         Host Frame: cudaMalloc [0x50c56] in libcudart.so.13
+=========         Host Frame: test::device_alloc(unsigned long, int) [0x1602d] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:60 [0x118f2] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Leaked 368 bytes at 0x6d2000000
+=========     Saved host backtrace up to driver entry point at allocation time
+=========         Host Frame: cuMemAllocAsync [0x3a324f] in libcuda.so.1
+=========         Host Frame:  [0x1589c] in libcudart.so.13
+=========         Host Frame: cudaMallocAsync [0x777ec] in libcudart.so.13
+=========         Host Frame: tilestream::cuda::detail::(anonymous namespace)::build(tilestream::cuda::BatchRequest const&, tilestream::cuda::detail::Plan&, CUstream_st*) in plan.cpp:579 [0x2e725] in tilestream_cuda_numerics_tests
+=========         Host Frame: tilestream::cuda::prepare_batch(tilestream::cuda::BatchRequest const&, std::unique_ptr<tilestream::cuda::BatchPlan, std::default_delete<tilestream::cuda::BatchPlan> >&, CUstream_st*) in plan.cpp:700 [0x2f142] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::execute(std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::cuda::Operation, std::vector<std::unique_ptr<void, test::DeviceFree>, std::allocator<std::unique_ptr<void, test::DeviceFree> > > const&, std::vector<unsigned long, std::allocator<unsigned long> > const&) in cuda_numerics_test.cpp:54 [0x117a3] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::library(numerics::Case const&, bool) in cuda_numerics_test.cpp:106 [0x12761] in tilestream_cuda_numerics_tests
+=========         Host Frame: (anonymous namespace)::CudaNumerics_SpecialValueContract_Test::TestBody() in cuda_numerics_test.cpp:186 [0x147a0] in tilestream_cuda_numerics_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x7d23e] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::Test::Run() [0x64055] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestInfo::Run() [0x64214] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::TestSuite::Run() [0x643fe] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7226b] in tilestream_cuda_numerics_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x7d916] in tilestream_cuda_numerics_tests
+=========         Host Frame: testing::UnitTest::Run() [0x645f7] in tilestream_cuda_numerics_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x2718e] in tilestream_cuda_numerics_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x27162] in tilestream_cuda_numerics_tests
+========= 
+========= Target application returned an error
+========= LEAK SUMMARY: 18352 bytes leaked in 7 allocations
+========= ERROR SUMMARY: 23 errors

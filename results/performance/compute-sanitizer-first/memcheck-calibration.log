@@ -1,0 +1,301 @@
+========= COMPUTE-SANITIZER
+[==========] Running 9 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 5 tests from CudaCalibration
+[ RUN      ] CudaCalibration.StandaloneMatchesCpuReference
+[       OK ] CudaCalibration.StandaloneMatchesCpuReference (174 ms)
+[ RUN      ] CudaCalibration.FusedMatchesSeparateDecodeAndCalibrate
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (7,0,0) in block (15,0,0)
+=========     Access to 0x7858b08068d0 is out of bounds
+=========     and is 13 bytes after the nearest allocation at 0x7858b0803400 of size 13 508 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (8,0,0) in block (15,0,0)
+=========     Access to 0x7858b08068e0 is out of bounds
+=========     and is 29 bytes after the nearest allocation at 0x7858b0803400 of size 13 508 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (9,0,0) in block (15,0,0)
+=========     Access to 0x7858b08068f0 is out of bounds
+=========     and is 45 bytes after the nearest allocation at 0x7858b0803400 of size 13 508 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (10,0,0) in block (15,0,0)
+=========     Access to 0x7858b0806900 is out of bounds
+=========     and is 61 bytes after the nearest allocation at 0x7858b0803400 of size 13 508 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (11,0,0) in block (15,0,0)
+=========     Access to 0x7858b0806910 is out of bounds
+=========     and is 77 bytes after the nearest allocation at 0x7858b0803400 of size 13 508 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (12,0,0) in block (15,0,0)
+=========     Access to 0x7858b0806920 is out of bounds
+=========     and is 93 bytes after the nearest allocation at 0x7858b0803400 of size 13 508 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (13,0,0) in block (15,0,0)
+=========     Access to 0x7858b0806930 is out of bounds
+=========     and is 109 bytes after the nearest allocation at 0x7858b0803400 of size 13 508 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (14,0,0) in block (15,0,0)
+=========     Access to 0x7858b0806940 is out of bounds
+=========     and is 125 bytes after the nearest allocation at 0x7858b0803400 of size 13 508 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (15,0,0) in block (15,0,0)
+=========     Access to 0x7858b0806950 is out of bounds
+=========     and is 141 bytes after the nearest allocation at 0x7858b0803400 of size 13 508 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (16,0,0) in block (15,0,0)
+=========     Access to 0x7858b0806960 is out of bounds
+=========     and is 157 bytes after the nearest allocation at 0x7858b0803400 of size 13 508 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (17,0,0) in block (15,0,0)
+=========     Access to 0x7858b0806970 is out of bounds
+=========     and is 144 bytes before the nearest allocation at 0x7858b0806a00 of size 37 044 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (18,0,0) in block (15,0,0)
+=========     Access to 0x7858b0806980 is out of bounds
+=========     and is 128 bytes before the nearest allocation at 0x7858b0806a00 of size 37 044 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::internal::UnitTestImpl::RunAllTests() [0x7e36b] in tilestream_cuda_calibration_tests
+=========         Host Frame: bool testing::internal::HandleExceptionsInMethodIfSupported<testing::internal::UnitTestImpl, bool>(testing::internal::UnitTestImpl*, bool (testing::internal::UnitTestImpl::*)(), char const*) [0x89856] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::UnitTest::Run() [0x706f7] in tilestream_cuda_calibration_tests
+=========         Host Frame: RUN_ALL_TESTS() in gtest.h:2317 [0x334e3] in tilestream_cuda_calibration_tests
+=========         Host Frame: main in cuda_test_main.cpp:13 [0x334b7] in tilestream_cuda_calibration_tests
+========= 
+========= Invalid __global__ read of size 4 bytes
+=========     at void tilestream::cuda::<unnamed>::decode<unsigned short, (bool)1>(const tilestream::cuda::DeviceImage *, const tilestream::cuda::detail::WindowImage *, unsigned int, tilestream::DeviceResult *)+0x3a30
+=========     by thread (19,0,0) in block (15,0,0)
+=========     Access to 0x7858b0806990 is out of bounds
+=========     and is 112 bytes before the nearest allocation at 0x7858b0806a00 of size 37 044 bytes
+=========     Saved host backtrace up to driver entry point at kernel launch time
+=========         Host Frame: void tilestream::cuda::(anonymous namespace)::decode<unsigned short, true>(tilestream::cuda::DeviceImage const*, tilestream::cuda::detail::WindowImage const*, unsigned int, tilestream::DeviceResult*) in decoder.cu:176 [0x50a48] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::Status tilestream::cuda::(anonymous namespace)::run<unsigned short, true>(tilestream::cuda::detail::Plan const&, tilestream::DeviceResult*, CUstream_st*) in decoder.cu:331 [0x50ce1] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::(anonymous namespace)::enqueue(tilestream::cuda::detail::Plan const*, tilestream::cuda::Operation, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:355 [0x4f7fb] in tilestream_cuda_calibration_tests
+=========         Host Frame: tilestream::cuda::decode_calibrate_async(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) in decoder.cu:389 [0x4fa09] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::execute(tilestream::cuda::Operation, std::vector<tilestream::cuda::BatchItem, std::allocator<tilestream::cuda::BatchItem> > const&, tilestream::Status (*)(tilestream::cuda::BatchPlan const&, tilestream::MutableBytes, tilestream::cuda::ResultBuffer, CUstream_st*) noexcept) in cuda_calibration_test.cpp:177 [0x1395d] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::expect_fused_matches_separate(tilestream::PixelType, bool, std::mersenne_twister_engine<unsigned long, 32ul, 624ul, 397ul, 31ul, 2567483615ul, 11ul, 4294967295ul, 7ul, 2636928640ul, 15ul, 4022730752ul, 18ul, 1812433253ul>&) in cuda_calibration_test.cpp:315 [0x16166] in tilestream_cuda_calibration_tests
+=========         Host Frame: (anonymous namespace)::CudaCalibration_FusedMatchesSeparateDecodeAndCalibrate_Test::TestBody() in cuda_calibration_test.cpp:332 [0x16c6f] in tilestream_cuda_calibration_tests
+=========         Host Frame: void testing::internal::HandleExceptionsInMethodIfSupported<testing::Test, void>(testing::Test*, void (testing::Test::*)(), char const*) [0x8917e] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::Test::Run() [0x70155] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestInfo::Run() [0x70314] in tilestream_cuda_calibration_tests
+=========         Host Frame: testing::TestSuite::Run() [0x704fe] in tilestream_cuda_calibration_tests
+[truncated after 300 lines; the full log was 19920 lines]

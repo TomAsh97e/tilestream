@@ -148,8 +148,11 @@ __device__ void decode_row(const std::uint32_t *words, std::uint32_t seed, std::
             // The uint16 scan is modulo 65536 only after this narrowing.
             const auto sample = static_cast<Sample>(combine<Sample>(before, prefix[k]));
             if constexpr (Calibrated) {
-                values.values[k] = detail::calibrate(detail::sample_value<Sample>(sample),
-                                                     calibration, x + first + k, y);
+                // Calibration maps exist only for the region, so columns outside it are skipped.
+                const bool inside = first + k >= left && first + k < right;
+                values.values[k] = inside ? detail::calibrate(detail::sample_value<Sample>(sample),
+                                                              calibration, x + first + k, y)
+                                          : 0.0F;
             } else {
                 values.values[k] = sample;
             }

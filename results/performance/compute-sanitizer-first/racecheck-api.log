@@ -1,0 +1,6 @@
+========= COMPUTE-SANITIZER
+Note: Google Test filter = -CudaApi.NoHiddenDeviceSynchronization
+[==========] Running 6 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 6 tests from CudaApi
+[ RUN      ] CudaApi.IndependentPlansOnTwoStreams
