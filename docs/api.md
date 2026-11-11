@@ -2,7 +2,7 @@
 
 ## Implementation status
 
-T04 implements and tests the pure host size queries `image_span`, `compress_bound`, and `workspace_size`. It defines the public types and declares the parser, batch preparation, and asynchronous entry points. Those declarations are design contracts, not working codecs or no-op stubs. Parser/CPU codec implementation belongs to T05-T06, CUDA execution to T08-T09, batch-plan integration to T10, and calibration to T11-T12.
+The library provides pure host size queries (`image_span`, `compress_bound`, `workspace_size`), a host parser and a scalar CPU codec for uint16 and bit-exact FP32, and TIFF/BigTIFF interoperability through libtiff. On the GPU, `prepare_batch` plans batches, `compress_async` produces the same canonical bitstream as the CPU encoder, and `decompress_async` and `decode_roi_async` decode parsed archives, staged tile subsets and encoder output. `calibrate_async` and the fused `decode_calibrate_async` apply calibration under a defined [numerical contract](numerical-analysis.md). `DeviceBuffer` and `synchronize` are conveniences, and `examples/cpp_client` uses only installed headers. Testing is described in [testing.md](testing.md), the benchmark harness in [benchmarking.md](benchmarking.md), the comparison with other codecs in [baselines.md](baselines.md), and profiling and optimizations in [performance-investigations.md](performance-investigations.md).
 
 The headers are:
 
@@ -10,7 +10,11 @@ The headers are:
 - `format.h`: wire offsets and constants, not serialized C++ structures;
 - `sizing.h`: checked, allocation-free size queries;
 - `api.h`: owned host metadata and the host-parser declaration;
-- `cuda.h`: native device records, RAII batch-plan declaration, and CUDA entry points.
+- `cpu.h`: scalar host compression and decompression;
+- `tiff.h`: checked TIFF/BigTIFF import and tiled export;
+- `cuda.h`: native device records, the RAII `DeviceBuffer` and `BatchPlan`, and CUDA entry points.
+
+The [TIFF interoperability contract](tiff.md) defines the accepted tags, compression and predictor options, resource limits, and metadata limitations. TIFF I/O is synchronous host file I/O and is separate from the CUDA execution interface.
 
 Host headers require C++17 but no CUDA toolkit. In a CPU-only installation `cuda.h` exposes no CUDA entry points and includes no CUDA headers. In a CUDA installation it uses the real `cudaStream_t` from CUDA Runtime. The exported CMake target supplies that public dependency.
 
@@ -62,17 +66,19 @@ Preparation validates the host-known shapes, capacities, and device pointers. Ex
 
 ## Batch plans and ownership
 
-`prepare_batch(request, plan, stream)` is an explicit, non-hot-path convenience operation. It first validates all host-known arguments, descriptors, capacities, ROI/map shapes, and non-aliasing rules for the complete batch. It then copies request metadata into a new plan, creates device descriptor tables, and completes their upload in the supplied stream before returning. It may allocate and wait for that stream; it must not synchronize the entire device. The previous `plan` remains intact on failure.
+`prepare_batch(request, plan, stream)` is an explicit, non-hot-path convenience operation. It first validates all host-known arguments, descriptors, capacities, ROI/map shapes, and non-aliasing rules for the complete batch. It then copies request metadata into a new plan, creates device descriptor tables, and completes their upload in the supplied stream before returning. It may allocate and wait for that stream. It also loads every kernel the plan launches, so that no execution has to. Under CUDA's default lazy module loading, the first preparation of an operation and pixel type in a process can therefore synchronize the device; later preparations do not. The previous `plan` remains intact on failure.
 
-The RAII `BatchPlan` owns its host metadata copies and device descriptor tables, not image, payload, map, workspace, or result buffers. Borrowed request arrays and host metadata may be released after successful preparation. Device data buffers and the plan itself must remain alive until all executions using them complete. Destruction must not be relied upon as an execution-completion mechanism.
+The RAII `BatchPlan` owns its host metadata copies and device descriptor tables, not image, payload, map, workspace, or result buffers. Borrowed request arrays and host metadata may be released after successful preparation. Device data buffers and the plan itself must remain alive until all executions using them complete. Destruction must not be relied upon as an execution-completion mechanism. A destroyed plan returns its descriptor tables with `cudaFreeAsync` on `cudaStreamPerThread` and never waits.
 
 A plan fixes its operation, image layouts, buffer addresses/capacities, ROI, calibration parameter values, and CUDA device. Reuse may change input pixel values, or map pixel values, only after preceding work has finished. A parsed compressed source must remain byte-identical to the validated source; otherwise revalidate and prepare again. An encoder-output source may be regenerated by the matching encoder under proper dependencies. Changing bound addresses/layouts or scalar parameters requires a new plan. Later wrappers may expose explicit rebinding, but V1 has no implicit rebinding.
 
 One nonempty batch has one input pixel type, although dimensions and pitch may differ. Compression uses `request.tile` for every image. Decode uses each archive's geometry. Calibration always produces FP32, so the output type may differ from the common input type.
 
-A plan is not reentrant: one execution at a time per plan. Concurrent calls require independent plans, workspaces, results, and nonoverlapping writable buffers, typically on different streams. Immutable inputs may be shared. There is no global mutable execution scratch.
+A plan is not reentrant: one execution at a time per plan. Executions of one plan write the same bound outputs, so they must be ordered, for example by issuing them in one stream. Concurrent calls require independent plans, workspaces, results, and nonoverlapping writable buffers, typically on different streams. Immutable inputs may be shared. There is no global mutable execution scratch.
 
-A logical batch may have up to `UINT32_MAX` images. Larger file tile counts and batches are traversed in bounded execution windows, with 64-bit global offsets. Each active window has at most `INT32_MAX` tiles before using a primitive with a signed 32-bit count. Resource budgeting and overlap orchestration are T17 work; this contract does not claim they already exist in T04.
+TileStream keeps no mutable global state of its own. Different host threads may prepare, execute, and destroy independent plans at the same time. A plan's host side is immutable after preparation, so `workspace_spec` may be called from any thread. Preparation and execution require the calling thread's current device to be the plan's device.
+
+A logical batch may have up to `UINT32_MAX` images. Larger file tile counts and batches are traversed in bounded execution windows, with 64-bit global offsets. Each active window has at most `INT32_MAX` tiles before using a primitive with a signed 32-bit count. The CUDA implementation uses windows of at most 4096 tiles, so workspace stays bounded for any image or batch size. Resource budgeting and the orchestration of overlapping copies and decodes are not part of this contract.
 
 ## Workspace derivation
 
@@ -92,11 +98,11 @@ W = A256(4 * 4096 * T)       residual words, including seed slots
 
 The 32-byte tile-analysis record is scratch, not the public `DeviceTile` descriptor. Full slots are reserved for partial tiles, without counting those unused slots as image data. Block-local scans/reductions use kernel local/shared resources, not an undeclared global allocation. Each region starts at a 256-byte boundary; regions cannot borrow each other's padding.
 
-`WorkspaceSpec` describes maxima sufficient for every sequential window in a plan. `image_count` and `tile_count` are active-window counts, not necessarily full file/batch counts. Require `1 <= I <= UINT32_MAX`, `I <= T <= INT32_MAX`, and an allowed tile geometry. For mixed decode geometries, use the `(64,64)` shape to bound the maximum row count. Decode and calibration may use less scratch, but the initial common query deliberately returns this conservative bound rather than promising an unimplemented zero-scratch kernel.
+`WorkspaceSpec` describes maxima sufficient for every sequential window in a plan. `image_count` and `tile_count` are active-window counts, not necessarily full file/batch counts. Require `1 <= I <= UINT32_MAX`, `I <= T <= INT32_MAX`, and an allowed tile geometry. For mixed decode geometries, use the `(64,64)` shape to bound the maximum row count. Decode and fused decode with calibration may use less scratch, but their query deliberately returns this conservative bound. Standalone calibration has no tiles and uses no scratch, so its plan reports the valid empty spec and needs no workspace.
 
 `S` is not guessed from the number of tiles. Preparation must query the actual CUB primitive, data types, item count, toolkit version, and device used by the implementation. If several primitive operations or windows run sequentially, reserve the maximum of their queried temporary sizes. The region is reusable only after earlier work in the stream completes. Concurrent operations use separate workspaces. If a backend later requires simultaneously live temporary areas, it must account for their sum instead of reusing this maximum.
 
-The implemented `workspace_size(WorkspaceSpec, bytes)` is a pure arithmetic query. It does not call CUB and cannot verify a caller-supplied `scan_temp_bytes`. Executable plans supply the authoritative spec through `BatchPlan::workspace_spec()` after actual CUB queries in T08-T10. Zero scratch is valid only if the chosen primitive genuinely requires none. T04's zero-scratch test cases verify the formula, not a device allocation requirement.
+The implemented `workspace_size(WorkspaceSpec, bytes)` is a pure arithmetic query. It does not call CUB and cannot verify a caller-supplied `scan_temp_bytes`. Executable plans supply the authoritative spec through `BatchPlan::workspace_spec()` after actual CUB queries. Zero scratch is valid only if the chosen primitive genuinely requires none. The zero-scratch test cases verify the formula, not a device allocation requirement.
 
 For one default tile and one image, the fixed regions total 17664 bytes; append `A256(S)`. Every product, rounding, and sum is checked against `L`. A valid empty spec (`I=T=S=0`) returns zero, without inspecting geometry; inconsistent empty counts are invalid. Excess active-window counts return `resource_limit`. Arithmetic overflow returns `size_overflow`. On any failure, the output argument is unchanged.
 
@@ -121,7 +127,9 @@ Status operation(const BatchPlan& plan, MutableBytes workspace,
 
 For full-image fused decode, supply an ROI covering the full image. `roi` is ignored for full decode and standalone calibration. Fields not used by the selected operation are ignored and should remain default-initialized. No execution function allocates, frees memory, performs file I/O, or waits for host-visible compressed sizes.
 
-`Parameter.kind` selects a scalar or FP32 map independently for gain and offset. Maps exactly match the output region dimensions, with independent pitches. Scalar parameters default to offset 0 and gain 1. Maps use output-local coordinates, never full-image coordinates implicitly. Fused and separate calibration implement `(x - offset) * gain` with the same defined rounding policy; they do not replace it with affine FMA. The controlled two-rounding policy and special-value tests are completed in T12, not inferred from bit-exact decoder tests.
+`Parameter.kind` selects a scalar or FP32 map independently for gain and offset. Maps exactly match the output region dimensions, with independent pitches. Scalar parameters default to offset 0 and gain 1. Maps use output-local coordinates, never full-image coordinates implicitly. A map must be a valid FP32 view of device-accessible memory: a wrong size, type, or pitch, a missing map, or an unknown kind is `invalid_argument`, an unknown pixel type value is `unsupported_type`, and too little capacity is `buffer_too_small`. The output must be FP32 and may not overlap the input, a map, or another output.
+
+Calibration computes `y = (x - offset) * gain` for each output pixel in binary32, with two roundings to nearest even: the subtraction is rounded, then the multiplication. The device uses `__fsub_rn` and `__fmul_rn`, which are never contracted into an FMA, and does not flush subnormal operands or results. A uint16 sample converts to FP32 exactly; an FP32 sample is used with its stored bits. Fused and separate calibration run the same operations on the same sample bits, so on one device they produce identical output bits, NaNs included. NaN payloads are otherwise not part of the contract. Calibrated output is processed data, not a lossless reconstruction of the input. The special-value contract, error bounds, and measured errors are defined in [numerical-analysis.md](numerical-analysis.md) and tested separately from the bit-exact codec.
 
 ### Alignment and capacity
 
@@ -130,6 +138,8 @@ For full-image fused decode, supply an ROI covering the full image. `roi` is ign
 - Workspace: 256-byte aligned, capacity at least the plan's checked query. Null is permitted only for a zero-size requirement.
 - Results: alignment of `DeviceResult` (8 on the supported platform), at least one 16-byte record per logical image, with checked `count * sizeof(DeviceResult)`.
 - Device descriptor tables: natural alignment of their native record type, allocated by preparation.
+
+Preparation and execution check the base address of every device pointer with `cudaPointerGetAttributes`. Device memory must belong to the plan's device. Managed memory and mapped pinned host memory are accepted. Ordinary pageable host memory is accepted only on a device that reports pageable memory access. Other pointers return `invalid_argument`. This check cannot prove that the declared capacity is allocated.
 
 For compression, capacity must be at least `compress_bound` before launch, irrespective of how compressible the data appears. Exact output size is not known on the host until completion. Whole file buffers larger than the actual result remain allocations, not valid file lengths.
 
@@ -145,12 +155,27 @@ Within a batch, all writable output ranges, workspace, result records, and plan-
 4. Record an event after execution or use `cudaStreamSynchronize` to observe completion and CUDA execution errors. If CUDA execution fails, neither output nor device status records are trustworthy, even if a record still contains an earlier `success` value.
 5. To read results on the CPU, enqueue a device-to-pinned-host copy in the same stream after the operation and wait for an event after that copy. A host file wrapper may explicitly wait, read `bytes_written`, then copy exactly that many bytes. Those waits/copies are measured as host-wrapper cost.
 
+Errors are separated by when they are detected. Argument, plan, capacity, alignment, aliasing, and pointer checks run first and return their own status before any work is enqueued. `cuda_error` from an execution function means a CUDA runtime call failed while checking or enqueueing. Per-image codec failures, such as `malformed_data` on the trusted path, appear only in the `DeviceResult` records. CUDA execution failures appear when the caller waits on the stream or an event.
+
+CUDA reports launch failures only through the runtime's per-thread last error. Every library call that returns `cuda_error` after a failed runtime call clears that error, so a later launch check cannot report it again. An execution function does not enqueue while an error from the caller's earlier work is pending: it returns `cuda_error` and leaves that error for the caller to read with `cudaGetLastError`.
+
 An event or status buffer is not implicitly synchronized by the library. The caller supplies the stream explicitly; a null/default CUDA stream is accepted but carries CUDA's default-stream ordering semantics. The stream and all device allocations must belong to the plan's device. Independent streams require explicit event ordering when sharing producer/consumer data.
+
+No execution function synchronizes the entire device. Executions never load kernels either, because preparation has already loaded them; see [Batch plans and ownership](#batch-plans-and-ownership).
 
 An empty batch is a no-op: no image/result pointer access, no stream work, no CUDA availability requirement, and zero workspace. Preparing it needs only an empty host plan. Execution still requires the matching operation, but ignores otherwise unused buffers and stream. No fabricated successful CUDA test should be used as evidence that a device executed work.
 
-## Verification in T04
+### Device buffers
+
+`DeviceBuffer` is an optional RAII owner for device memory from the stream-ordered allocator of the stream's device. Execution functions never allocate; callers may use it, or any other allocator, for inputs, outputs, workspace, and results.
+
+- `DeviceBuffer::allocate(bytes, stream, buffer)` allocates with `cudaMallocAsync` in `stream`. The memory is aligned to `workspace_alignment`. A zero size gives an empty buffer. On success the previous memory of `buffer` is freed in stream order; if the allocation fails, `buffer` is unchanged. Sizes above `L` return `size_overflow`, and an allocation failure returns `cuda_error`.
+- `release(stream)` frees with `cudaFreeAsync` after the work already enqueued in `stream`. Releasing an empty buffer succeeds.
+- The destructor frees on `cudaStreamPerThread` without waiting, so it requires all work using the memory to have completed. Use `release` while work may still be pending.
+- `synchronize(stream)` waits for `stream` and returns `cuda_error` for any CUDA launch or execution failure seen there.
+
+## Verification of the size queries
 
 `tilestream.cpu.sizing` tests metadata-only bounds, all supported tile geometries, edge padding against explicit per-tile sums, invalid types/dimensions, image span, checked add/multiply/alignment, workspace limits and overflow, and output-argument preservation. These tests allocate no enormous image or workspace buffers.
 
-`tilestream.cuda.headers` compiles the CUDA contracts and asserts that device records are standard-layout/trivially copyable, without linking unimplemented operations or pretending to test a codec. CPU-only builds compile host API headers without CUDA. Later stages must supply execution, parser, golden-bitstream, numerical, and sanitizer tests in addition to these size tests.
+`tilestream.cuda.headers` compiles the CUDA contracts and asserts that device records are standard-layout/trivially copyable, without linking unimplemented operations or pretending to test a codec. CPU-only builds compile host API headers without CUDA. Execution, parser, golden-bitstream, numerical and sanitizer tests are described in [testing.md](testing.md).

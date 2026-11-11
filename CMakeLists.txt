@@ -25,6 +25,8 @@ if(TILESTREAM_ENABLE_CUDA)
     set(CMAKE_CUDA_STANDARD_REQUIRED ON)
     set(CMAKE_CUDA_EXTENSIONS OFF)
     set(CMAKE_CUDA_ARCHITECTURES "${TILESTREAM_CUDA_ARCHITECTURES}")
+    # The library exports CUDA::cudart, so no target may add a second, static runtime.
+    set(CMAKE_CUDA_RUNTIME_LIBRARY Shared)
 endif()
 
 if(TILESTREAM_ENABLE_NVCOMP)
@@ -65,7 +67,9 @@ set(TILESTREAM_SOURCES
     src/io/tiff.cpp
 )
 if(TILESTREAM_ENABLE_CUDA)
-    list(APPEND TILESTREAM_SOURCES src/cuda/device_info.cu)
+    list(APPEND TILESTREAM_SOURCES
+        src/cuda/device_info.cu src/cuda/plan.cpp src/cuda/buffer.cpp
+        src/cuda/encoder.cu src/cuda/decoder.cu src/cuda/calibrate.cu)
 endif()
 
 add_library(tilestream_library ${TILESTREAM_SOURCES})
@@ -139,6 +143,27 @@ if(TILESTREAM_BUILD_TESTS)
     target_link_libraries(tilestream_tiff_interop PRIVATE TileStream::tilestream)
     tilestream_enable_warnings(tilestream_tiff_interop)
 
+    # The calibration error suite records the flags it was measured with. Host code never
+    # contracts into an FMA, so the host reference rounds exactly like the device.
+    string(TOUPPER "${CMAKE_BUILD_TYPE}" build_type)
+    string(STRIP "${CMAKE_CXX_FLAGS} ${CMAKE_CXX_FLAGS_${build_type}} -ffp-contract=off"
+        numerics_cxx_flags)
+    string(STRIP "${CMAKE_CUDA_FLAGS} ${CMAKE_CUDA_FLAGS_${build_type}}" numerics_cuda_flags)
+    function(tilestream_numerics target)
+        target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/tests)
+        target_compile_options(${target} PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-ffp-contract=off>)
+        target_compile_definitions(${target} PRIVATE
+            TILESTREAM_NUMERICS_CXX_FLAGS="${numerics_cxx_flags}"
+            TILESTREAM_NUMERICS_CUDA_FLAGS="${numerics_cuda_flags}"
+        )
+    endfunction()
+
+    add_executable(tilestream_numerics_tests tests/numerics_test.cpp)
+    target_link_libraries(tilestream_numerics_tests PRIVATE GTest::gtest_main)
+    tilestream_numerics(tilestream_numerics_tests)
+    tilestream_enable_warnings(tilestream_numerics_tests)
+    add_test(NAME tilestream.cpu.numerics COMMAND tilestream_numerics_tests)
+    set_tests_properties(tilestream.cpu.numerics PROPERTIES LABELS "cpu;numerics")
     set_tests_properties(tilestream.cpu.codec tilestream.cpu.fp32 PROPERTIES LABELS "cpu;codec")
 
     if(TILESTREAM_ENABLE_CUDA)
@@ -153,6 +178,38 @@ if(TILESTREAM_BUILD_TESTS)
         add_test(NAME tilestream.cuda.device COMMAND tilestream_cuda_tests)
         set_tests_properties(tilestream.cuda.device PROPERTIES LABELS "cuda" SKIP_RETURN_CODE 77)
 
+        foreach(suite encoder decoder api loading calibration numerics)
+            add_executable(tilestream_cuda_${suite}_tests
+                tests/cuda_${suite}_test.cpp tests/cuda_test_main.cpp)
+            target_link_libraries(tilestream_cuda_${suite}_tests PRIVATE
+                TileStream::tilestream GTest::gtest)
+            target_compile_definitions(tilestream_cuda_${suite}_tests PRIVATE
+                TILESTREAM_GOLDEN_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/golden"
+            )
+            tilestream_enable_warnings(tilestream_cuda_${suite}_tests)
+            add_test(NAME tilestream.cuda.${suite} COMMAND tilestream_cuda_${suite}_tests)
+            set_tests_properties(tilestream.cuda.${suite} PROPERTIES
+                LABELS "cuda" SKIP_RETURN_CODE 77)
+        endforeach()
+        tilestream_numerics(tilestream_cuda_numerics_tests)
+        set_tests_properties(tilestream.cuda.encoder tilestream.cuda.decoder PROPERTIES
+            LABELS "cuda;codec")
+        set_tests_properties(tilestream.cuda.calibration PROPERTIES LABELS "cuda;calibration")
+        set_tests_properties(tilestream.cuda.numerics PROPERTIES LABELS "cuda;numerics")
+
+        # Calibration error analysis; only fast_math.cu is built with --use_fast_math.
+        add_executable(tilestream_numerics_report tests/numerics/report.cpp
+            tests/numerics/variants.cu tests/numerics/fast_math.cu)
+        target_link_libraries(tilestream_numerics_report PRIVATE TileStream::tilestream)
+        set_source_files_properties(tests/numerics/fast_math.cu PROPERTIES
+            COMPILE_OPTIONS "--use_fast_math")
+        tilestream_numerics(tilestream_numerics_report)
+        target_compile_definitions(tilestream_numerics_report PRIVATE
+            TILESTREAM_NUMERICS_CUDA_COMPILER="${CMAKE_CUDA_COMPILER_ID} ${CMAKE_CUDA_COMPILER_VERSION}"
+            TILESTREAM_NUMERICS_FAST_FLAGS="--use_fast_math"
+            TILESTREAM_DATASETS_DIR="${CMAKE_CURRENT_SOURCE_DIR}/datasets/fixtures"
+        )
+        tilestream_enable_warnings(tilestream_numerics_report)
     endif()
 endif()
 
@@ -160,6 +217,11 @@ if(TILESTREAM_BUILD_BENCHMARKS)
     add_executable(tilestream_benchmark benchmarks/smoke_benchmark.cpp)
     target_link_libraries(tilestream_benchmark PRIVATE TileStream::tilestream)
     tilestream_enable_warnings(tilestream_benchmark)
+    if(TILESTREAM_ENABLE_CUDA)
+        add_executable(tilestream_calibration_benchmark benchmarks/calibration_benchmark.cpp)
+        target_link_libraries(tilestream_calibration_benchmark PRIVATE TileStream::tilestream)
+        tilestream_enable_warnings(tilestream_calibration_benchmark)
+    endif()
 endif()
 
 if(TILESTREAM_BUILD_PYTHON)

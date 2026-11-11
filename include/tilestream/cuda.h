@@ -108,7 +108,43 @@ struct ResultBuffer {
     std::uint64_t count = 0;
 };
 
-// T04 contracts only. Construction and execution are implemented in T08-T11.
+// Owning device memory from the stream-ordered allocator, aligned to workspace_alignment.
+// Allocation is explicit and never happens inside an execution function.
+class DeviceBuffer {
+  public:
+    DeviceBuffer() noexcept = default;
+    // Requires all work using the memory to have completed; use release() to free in order.
+    ~DeviceBuffer();
+    DeviceBuffer(DeviceBuffer &&other) noexcept;
+    DeviceBuffer &operator=(DeviceBuffer &&other) noexcept;
+    DeviceBuffer(const DeviceBuffer &) = delete;
+    DeviceBuffer &operator=(const DeviceBuffer &) = delete;
+
+    // On success the previous memory of buffer is released in stream order.
+    [[nodiscard]] static Status allocate(std::uint64_t bytes, cudaStream_t stream,
+                                         DeviceBuffer &buffer) noexcept;
+    // Frees after the work already enqueued in stream.
+    [[nodiscard]] Status release(cudaStream_t stream) noexcept;
+
+    [[nodiscard]] void *data() const noexcept {
+        return data_;
+    }
+    [[nodiscard]] std::uint64_t size() const noexcept {
+        return size_;
+    }
+    [[nodiscard]] MutableBytes bytes() const noexcept {
+        return {data_, size_};
+    }
+
+  private:
+    void *data_ = nullptr;
+    std::uint64_t size_ = 0;
+};
+
+// Waits for stream and reports any CUDA launch or execution failure as cuda_error.
+[[nodiscard]] Status synchronize(cudaStream_t stream) noexcept;
+
+// A plan is used by one execution at a time; concurrent executions need separate plans.
 class BatchPlan {
   public:
     ~BatchPlan();
