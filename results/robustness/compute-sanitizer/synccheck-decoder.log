@@ -1,0 +1,42 @@
+========= COMPUTE-SANITIZER
+[==========] Running 13 tests from 3 test suites.
+[----------] Global test environment set-up.
+[----------] 8 tests from CudaDecoder
+[ RUN      ] CudaDecoder.FullDecodeOfCpuArchives
+[       OK ] CudaDecoder.FullDecodeOfCpuArchives (351 ms)
+[ RUN      ] CudaDecoder.RandomRoisMatchCroppedFullDecode
+[       OK ] CudaDecoder.RandomRoisMatchCroppedFullDecode (274 ms)
+[ RUN      ] CudaDecoder.RoiReadsOnlyIntersectingTiles
+[       OK ] CudaDecoder.RoiReadsOnlyIntersectingTiles (10 ms)
+[ RUN      ] CudaDecoder.EveryWidthPartialWarpsAndSingleSampleRows
+[       OK ] CudaDecoder.EveryWidthPartialWarpsAndSingleSampleRows (68 ms)
+[ RUN      ] CudaDecoder.SpecialFloatWordsAndEveryUint16Value
+[       OK ] CudaDecoder.SpecialFloatWordsAndEveryUint16Value (8 ms)
+[ RUN      ] CudaDecoder.MixedGeometriesAndWindows
+[       OK ] CudaDecoder.MixedGeometriesAndWindows (182 ms)
+[ RUN      ] CudaDecoder.FourEncoderDecoderCombinations
+[       OK ] CudaDecoder.FourEncoderDecoderCombinations (115 ms)
+[ RUN      ] CudaDecoder.EmptyBatchIsNoOp
+[       OK ] CudaDecoder.EmptyBatchIsNoOp (0 ms)
+[----------] 8 tests from CudaDecoder (1011 ms total)
+
+[----------] 2 tests from TrustedPath
+[ RUN      ] TrustedPath.ProducerErrorsArePropagatedPerImage
+[       OK ] TrustedPath.ProducerErrorsArePropagatedPerImage (1 ms)
+[ RUN      ] TrustedPath.CorruptIndexAndRowsAreReportedNotRead
+[       OK ] TrustedPath.CorruptIndexAndRowsAreReportedNotRead (2 ms)
+[----------] 2 tests from TrustedPath (4 ms total)
+
+[----------] 3 tests from CudaDecoderValidation
+[ RUN      ] CudaDecoderValidation.RejectsInvalidRegionsAndViews
+[       OK ] CudaDecoderValidation.RejectsInvalidRegionsAndViews (0 ms)
+[ RUN      ] CudaDecoderValidation.RejectsInconsistentSources
+[       OK ] CudaDecoderValidation.RejectsInconsistentSources (0 ms)
+[ RUN      ] CudaDecoderValidation.TrustedSourcesNeedCompleteShapes
+[       OK ] CudaDecoderValidation.TrustedSourcesNeedCompleteShapes (0 ms)
+[----------] 3 tests from CudaDecoderValidation (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 13 tests from 3 test suites ran. (1018 ms total)
+[  PASSED  ] 13 tests.
+========= ERROR SUMMARY: 0 errors

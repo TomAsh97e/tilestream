@@ -1,0 +1,61 @@
+{
+  "tests": 3,
+  "failures": 0,
+  "disabled": 0,
+  "errors": 0,
+  "timestamp": "2026-11-02T14:00:05Z",
+  "time": "3.329s",
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "Robustness",
+      "tests": 3,
+      "failures": 0,
+      "disabled": 0,
+      "errors": 0,
+      "timestamp": "2026-11-02T14:00:05Z",
+      "time": "3.329s",
+      "testsuite": [
+        {
+          "name": "RandomRoundTrips",
+          "file": ".\/tests\/robustness_test.cpp",
+          "line": 19,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-11-02T14:00:05Z",
+          "time": "1.236s",
+          "classname": "Robustness",
+          "cases": "10000",
+          "tiles": "raw 17341, constant 5966, predict 21940",
+          "edges": "edge tiles 36069, one-sample rows 73621, padded images 2017"
+        },
+        {
+          "name": "MutatedFilesAreRejectedOrDecodedConsistently",
+          "file": ".\/tests\/robustness_test.cpp",
+          "line": 127,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-11-02T14:00:07Z",
+          "time": "2.049s",
+          "classname": "Robustness",
+          "entry": " 0:4 5:3374",
+          "header": " 0:6 5:3248",
+          "payload": " 0:1421 5:2036",
+          "resize": " 0:1 5:3265",
+          "segment": " 0:1546 5:1760",
+          "splice": " 0:78 5:3261"
+        },
+        {
+          "name": "HarnessAcceptsValidFilesAndUnmutatedInputs",
+          "file": ".\/tests\/robustness_test.cpp",
+          "line": 164,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-11-02T14:00:09Z",
+          "time": "0.043s",
+          "classname": "Robustness"
+        }
+      ]
+    }
+  ]
+}

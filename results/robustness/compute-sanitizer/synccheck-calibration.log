@@ -1,0 +1,31 @@
+========= COMPUTE-SANITIZER
+[==========] Running 9 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 5 tests from CudaCalibration
+[ RUN      ] CudaCalibration.StandaloneMatchesCpuReference
+[       OK ] CudaCalibration.StandaloneMatchesCpuReference (169 ms)
+[ RUN      ] CudaCalibration.FusedMatchesSeparateDecodeAndCalibrate
+[       OK ] CudaCalibration.FusedMatchesSeparateDecodeAndCalibrate (178 ms)
+[ RUN      ] CudaCalibration.SpecialWordsMatchCpu
+[       OK ] CudaCalibration.SpecialWordsMatchCpu (1 ms)
+[ RUN      ] CudaCalibration.EveryUint16Value
+[       OK ] CudaCalibration.EveryUint16Value (7 ms)
+[ RUN      ] CudaCalibration.EmptyBatchIsNoOp
+[       OK ] CudaCalibration.EmptyBatchIsNoOp (0 ms)
+[----------] 5 tests from CudaCalibration (356 ms total)
+
+[----------] 4 tests from CudaCalibrationValidation
+[ RUN      ] CudaCalibrationValidation.RejectsInvalidOutputsAndMaps
+[       OK ] CudaCalibrationValidation.RejectsInvalidOutputsAndMaps (0 ms)
+[ RUN      ] CudaCalibrationValidation.RejectsInconsistentBatches
+[       OK ] CudaCalibrationValidation.RejectsInconsistentBatches (0 ms)
+[ RUN      ] CudaCalibrationValidation.FusedRegionsAndOutputs
+[       OK ] CudaCalibrationValidation.FusedRegionsAndOutputs (0 ms)
+[ RUN      ] CudaCalibrationValidation.ExecutionNeedsMatchingPlanAndNoWorkspace
+[       OK ] CudaCalibrationValidation.ExecutionNeedsMatchingPlanAndNoWorkspace (0 ms)
+[----------] 4 tests from CudaCalibrationValidation (1 ms total)
+
+[----------] Global test environment tear-down
+[==========] 9 tests from 2 test suites ran. (358 ms total)
+[  PASSED  ] 9 tests.
+========= ERROR SUMMARY: 0 errors

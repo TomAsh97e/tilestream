@@ -1,0 +1,30 @@
+Test project ./build/asan
+    Start 1: tilestream.cpu.smoke
+1/9 Test #1: tilestream.cpu.smoke .............   Passed    0.01 sec
+    Start 2: tilestream.cpu.sizing
+2/9 Test #2: tilestream.cpu.sizing ............   Passed    0.02 sec
+    Start 3: tilestream.cpu.codec
+3/9 Test #3: tilestream.cpu.codec .............   Passed    0.46 sec
+    Start 4: tilestream.cpu.fp32
+4/9 Test #4: tilestream.cpu.fp32 ..............   Passed    0.06 sec
+    Start 5: tilestream.io.tiff
+5/9 Test #5: tilestream.io.tiff ...............   Passed    0.02 sec
+    Start 6: tilestream.cpu.numerics
+6/9 Test #6: tilestream.cpu.numerics ..........   Passed    0.24 sec
+    Start 7: tilestream.cpu.robustness
+7/9 Test #7: tilestream.cpu.robustness ........   Passed   33.87 sec
+    Start 8: tilestream.cpu.fuzz_parse
+8/9 Test #8: tilestream.cpu.fuzz_parse ........   Passed    0.07 sec
+    Start 9: tilestream.cpu.fuzz_mutation
+9/9 Test #9: tilestream.cpu.fuzz_mutation .....   Passed    0.50 sec
+
+100% tests passed, 0 tests failed out of 9
+
+Label Time Summary:
+codec         =   0.52 sec*proc (2 tests)
+cpu           =  35.25 sec*proc (9 tests)
+numerics      =   0.24 sec*proc (1 test)
+robustness    =  34.44 sec*proc (3 tests)
+tiff          =   0.02 sec*proc (1 test)
+
+Total Test time (real) =  35.25 sec

@@ -47,12 +47,58 @@
         "CMAKE_CUDA_ARCHITECTURES": "89",
         "TILESTREAM_ENABLE_CUDA": "ON"
       }
+    },
+    {
+      "name": "asan",
+      "displayName": "CPU-only ASan and UBSan (Clang)",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_CXX_FLAGS": "-fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover=undefined",
+        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address,undefined",
+        "TILESTREAM_ENABLE_CUDA": "OFF",
+        "TILESTREAM_BUILD_BENCHMARKS": "OFF",
+        "TILESTREAM_BUILD_PYTHON": "OFF"
+      }
+    },
+    {
+      "name": "cuda-asan",
+      "displayName": "CUDA with host ASan and UBSan (GCC)",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CUDA_ARCHITECTURES": "89",
+        "CMAKE_CXX_FLAGS": "-fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover=undefined",
+        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address,undefined",
+        "TILESTREAM_ENABLE_CUDA": "ON",
+        "TILESTREAM_BUILD_BENCHMARKS": "OFF",
+        "TILESTREAM_BUILD_PYTHON": "OFF"
+      }
+    },
+    {
+      "name": "fuzz",
+      "displayName": "libFuzzer targets (Clang)",
+      "inherits": "base",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_CXX_FLAGS": "-fsanitize=fuzzer-no-link,address,undefined -fno-omit-frame-pointer -fno-sanitize-recover=undefined",
+        "CMAKE_EXE_LINKER_FLAGS": "-fsanitize=address,undefined",
+        "TILESTREAM_ENABLE_CUDA": "OFF",
+        "TILESTREAM_BUILD_FUZZERS": "ON",
+        "TILESTREAM_BUILD_BENCHMARKS": "OFF",
+        "TILESTREAM_BUILD_PYTHON": "OFF"
+      }
     }
   ],
   "buildPresets": [
     { "name": "cpu-only", "configurePreset": "cpu-only" },
     { "name": "cuda-debug", "configurePreset": "cuda-debug" },
-    { "name": "cuda-release", "configurePreset": "cuda-release" }
+    { "name": "cuda-release", "configurePreset": "cuda-release" },
+    { "name": "asan", "configurePreset": "asan" },
+    { "name": "cuda-asan", "configurePreset": "cuda-asan" },
+    { "name": "fuzz", "configurePreset": "fuzz" }
   ],
   "testPresets": [
     {
@@ -68,6 +114,22 @@
     {
       "name": "cuda-release",
       "configurePreset": "cuda-release",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "asan",
+      "configurePreset": "asan",
+      "output": { "outputOnFailure": true }
+    },
+    {
+      "name": "cuda-asan",
+      "configurePreset": "cuda-asan",
+      "output": { "outputOnFailure": true },
+      "environment": { "ASAN_OPTIONS": "protect_shadow_gap=0" }
+    },
+    {
+      "name": "fuzz",
+      "configurePreset": "fuzz",
       "output": { "outputOnFailure": true }
     }
   ]

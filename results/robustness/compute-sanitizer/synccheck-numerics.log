@@ -1,0 +1,16 @@
+========= COMPUTE-SANITIZER
+[==========] Running 3 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 3 tests from CudaNumerics
+[ RUN      ] CudaNumerics.LibraryMatchesHostSemanticsBitwise
+[       OK ] CudaNumerics.LibraryMatchesHostSemanticsBitwise (204 ms)
+[ RUN      ] CudaNumerics.DeviceResultsWithinBounds
+[       OK ] CudaNumerics.DeviceResultsWithinBounds (87 ms)
+[ RUN      ] CudaNumerics.SpecialValueContract
+[       OK ] CudaNumerics.SpecialValueContract (2 ms)
+[----------] 3 tests from CudaNumerics (295 ms total)
+
+[----------] Global test environment tear-down
+[==========] 3 tests from 1 test suite ran. (295 ms total)
+[  PASSED  ] 3 tests.
+========= ERROR SUMMARY: 0 errors

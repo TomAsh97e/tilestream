@@ -12,6 +12,7 @@ option(TILESTREAM_ENABLE_NVCOMP "Build the optional nvCOMP adapter" OFF)
 option(TILESTREAM_BUILD_TESTS "Build tests" ON)
 option(TILESTREAM_BUILD_BENCHMARKS "Build benchmarks" ON)
 option(TILESTREAM_BUILD_PYTHON "Build Python bindings" ON)
+option(TILESTREAM_BUILD_FUZZERS "Build libFuzzer targets (Clang)" OFF)
 set(TILESTREAM_CUDA_ARCHITECTURES "89" CACHE STRING "CUDA architectures used by TileStream")
 
 if(TILESTREAM_ENABLE_NVCOMP AND NOT TILESTREAM_ENABLE_CUDA)
@@ -166,6 +167,37 @@ if(TILESTREAM_BUILD_TESTS)
     set_tests_properties(tilestream.cpu.numerics PROPERTIES LABELS "cpu;numerics")
     set_tests_properties(tilestream.cpu.codec tilestream.cpu.fp32 PROPERTIES LABELS "cpu;codec")
 
+    add_executable(tilestream_robustness_tests tests/robustness_test.cpp)
+    target_link_libraries(tilestream_robustness_tests PRIVATE TileStream::tilestream GTest::gtest_main)
+    target_include_directories(tilestream_robustness_tests PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/tests ${CMAKE_CURRENT_SOURCE_DIR}/fuzz)
+    tilestream_enable_warnings(tilestream_robustness_tests)
+    add_test(NAME tilestream.cpu.robustness COMMAND tilestream_robustness_tests)
+    set_tests_properties(tilestream.cpu.robustness PROPERTIES LABELS "cpu;robustness")
+
+    # The fuzz corpora and minimal reproducers of fixed bugs run as ordinary tests in every build.
+    foreach(target parse mutation)
+        set(inputs ${CMAKE_CURRENT_SOURCE_DIR}/fuzz/corpus/${target})
+        if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/fuzz/regressions/${target})
+            list(APPEND inputs ${CMAKE_CURRENT_SOURCE_DIR}/fuzz/regressions/${target})
+        endif()
+        add_executable(tilestream_${target}_replay fuzz/${target}_fuzzer.cpp fuzz/replay.cpp)
+        target_link_libraries(tilestream_${target}_replay PRIVATE TileStream::tilestream)
+        target_include_directories(tilestream_${target}_replay PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/tests ${CMAKE_CURRENT_SOURCE_DIR}/fuzz)
+        tilestream_enable_warnings(tilestream_${target}_replay)
+        add_test(NAME tilestream.cpu.fuzz_${target} COMMAND tilestream_${target}_replay ${inputs})
+        set_tests_properties(tilestream.cpu.fuzz_${target} PROPERTIES LABELS "cpu;robustness")
+        if(TILESTREAM_BUILD_FUZZERS)
+            add_executable(tilestream_${target}_fuzzer fuzz/${target}_fuzzer.cpp)
+            target_link_libraries(tilestream_${target}_fuzzer PRIVATE TileStream::tilestream)
+            target_include_directories(tilestream_${target}_fuzzer PRIVATE
+                ${CMAKE_CURRENT_SOURCE_DIR}/tests ${CMAKE_CURRENT_SOURCE_DIR}/fuzz)
+            target_link_options(tilestream_${target}_fuzzer PRIVATE -fsanitize=fuzzer)
+            tilestream_enable_warnings(tilestream_${target}_fuzzer)
+        endif()
+    endforeach()
+
     if(TILESTREAM_ENABLE_CUDA)
         add_executable(tilestream_cuda_header_tests tests/cuda_headers_test.cu)
         target_link_libraries(tilestream_cuda_header_tests PRIVATE TileStream::tilestream)
@@ -178,7 +210,7 @@ if(TILESTREAM_BUILD_TESTS)
         add_test(NAME tilestream.cuda.device COMMAND tilestream_cuda_tests)
         set_tests_properties(tilestream.cuda.device PROPERTIES LABELS "cuda" SKIP_RETURN_CODE 77)
 
-        foreach(suite encoder decoder api loading calibration numerics)
+        foreach(suite encoder decoder api loading calibration numerics robustness)
             add_executable(tilestream_cuda_${suite}_tests
                 tests/cuda_${suite}_test.cpp tests/cuda_test_main.cpp)
             target_link_libraries(tilestream_cuda_${suite}_tests PRIVATE
@@ -192,10 +224,13 @@ if(TILESTREAM_BUILD_TESTS)
                 LABELS "cuda" SKIP_RETURN_CODE 77)
         endforeach()
         tilestream_numerics(tilestream_cuda_numerics_tests)
+        target_include_directories(tilestream_cuda_robustness_tests PRIVATE
+            ${CMAKE_CURRENT_SOURCE_DIR}/tests)
         set_tests_properties(tilestream.cuda.encoder tilestream.cuda.decoder PROPERTIES
             LABELS "cuda;codec")
         set_tests_properties(tilestream.cuda.calibration PROPERTIES LABELS "cuda;calibration")
         set_tests_properties(tilestream.cuda.numerics PROPERTIES LABELS "cuda;numerics")
+        set_tests_properties(tilestream.cuda.robustness PROPERTIES LABELS "cuda;robustness")
 
         # Calibration error analysis; only fast_math.cu is built with --use_fast_math.
         add_executable(tilestream_numerics_report tests/numerics/report.cpp

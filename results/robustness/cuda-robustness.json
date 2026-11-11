@@ -1,0 +1,44 @@
+{
+  "tests": 2,
+  "failures": 0,
+  "disabled": 0,
+  "errors": 0,
+  "timestamp": "2026-11-02T14:00:14Z",
+  "time": "1.811s",
+  "name": "AllTests",
+  "testsuites": [
+    {
+      "name": "CudaRobustness",
+      "tests": 2,
+      "failures": 0,
+      "disabled": 0,
+      "errors": 0,
+      "timestamp": "2026-11-02T14:00:14Z",
+      "time": "1.811s",
+      "testsuite": [
+        {
+          "name": "RandomRoundTripsOnEveryPath",
+          "file": ".\/tests\/cuda_robustness_test.cpp",
+          "line": 153,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-11-02T14:00:14Z",
+          "time": "1.758s",
+          "classname": "CudaRobustness",
+          "cases": "10000"
+        },
+        {
+          "name": "FabricatedMetadataIsRejectedOrStaysInBounds",
+          "file": ".\/tests\/cuda_robustness_test.cpp",
+          "line": 243,
+          "status": "RUN",
+          "result": "COMPLETED",
+          "timestamp": "2026-11-02T14:00:16Z",
+          "time": "0.052s",
+          "classname": "CudaRobustness",
+          "statuses": " 0:2343 5:550 7:107"
+        }
+      ]
+    }
+  ]
+}

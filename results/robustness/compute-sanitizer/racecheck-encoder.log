@@ -1,0 +1,31 @@
+========= COMPUTE-SANITIZER
+[==========] Running 9 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 7 tests from CudaEncoder
+[ RUN      ] CudaEncoder.ReproducesGoldenFiles
+[       OK ] CudaEncoder.ReproducesGoldenFiles (185 ms)
+[ RUN      ] CudaEncoder.EveryResidualWidthAndFinalWord
+[       OK ] CudaEncoder.EveryResidualWidthAndFinalWord (99 ms)
+[ RUN      ] CudaEncoder.RandomBatchesMatchCpuBitstreams
+[       OK ] CudaEncoder.RandomBatchesMatchCpuBitstreams (2360 ms)
+[ RUN      ] CudaEncoder.EveryUint16ValueAndSpecialFloatWords
+[       OK ] CudaEncoder.EveryUint16ValueAndSpecialFloatWords (224 ms)
+[ RUN      ] CudaEncoder.ImagesSplitAcrossWindows
+[       OK ] CudaEncoder.ImagesSplitAcrossWindows (2796 ms)
+[ RUN      ] CudaEncoder.ManySmallImagesInSharedAllocations
+[       OK ] CudaEncoder.ManySmallImagesInSharedAllocations (676 ms)
+[ RUN      ] CudaEncoder.EmptyBatchIsNoOp
+[       OK ] CudaEncoder.EmptyBatchIsNoOp (0 ms)
+[----------] 7 tests from CudaEncoder (6343 ms total)
+
+[----------] 2 tests from CudaEncoderValidation
+[ RUN      ] CudaEncoderValidation.RejectsInvalidRequestsAndKeepsPreviousPlan
+[       OK ] CudaEncoderValidation.RejectsInvalidRequestsAndKeepsPreviousPlan (20 ms)
+[ RUN      ] CudaEncoderValidation.RejectedExecutionsLeaveBuffersUntouched
+[       OK ] CudaEncoderValidation.RejectedExecutionsLeaveBuffersUntouched (33 ms)
+[----------] 2 tests from CudaEncoderValidation (58 ms total)
+
+[----------] Global test environment tear-down
+[==========] 9 tests from 2 test suites ran. (6402 ms total)
+[  PASSED  ] 9 tests.
+========= RACECHECK SUMMARY: 0 hazards displayed (0 errors, 0 warnings)

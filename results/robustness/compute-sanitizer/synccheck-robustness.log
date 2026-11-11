@@ -1,0 +1,14 @@
+========= COMPUTE-SANITIZER
+[==========] Running 2 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 2 tests from CudaRobustness
+[ RUN      ] CudaRobustness.RandomRoundTripsOnEveryPath
+[       OK ] CudaRobustness.RandomRoundTripsOnEveryPath (618 ms)
+[ RUN      ] CudaRobustness.FabricatedMetadataIsRejectedOrStaysInBounds
+[       OK ] CudaRobustness.FabricatedMetadataIsRejectedOrStaysInBounds (274 ms)
+[----------] 2 tests from CudaRobustness (893 ms total)
+
+[----------] Global test environment tear-down
+[==========] 2 tests from 1 test suite ran. (893 ms total)
+[  PASSED  ] 2 tests.
+========= ERROR SUMMARY: 0 errors

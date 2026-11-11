@@ -1,0 +1,24 @@
+========= COMPUTE-SANITIZER
+Note: Google Test filter = -CudaApi.NoHiddenDeviceSynchronization
+[==========] Running 6 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 6 tests from CudaApi
+[ RUN      ] CudaApi.IndependentPlansOnTwoStreams
+[       OK ] CudaApi.IndependentPlansOnTwoStreams (121 ms)
+[ RUN      ] CudaApi.IndependentPlansFromTwoHostThreads
+[       OK ] CudaApi.IndependentPlansFromTwoHostThreads (45 ms)
+[ RUN      ] CudaApi.RepeatedCyclesReturnAllMemory
+[       OK ] CudaApi.RepeatedCyclesReturnAllMemory (108 ms)
+[ RUN      ] CudaApi.SuccessfulEnqueueIsNotCompletion
+[       OK ] CudaApi.SuccessfulEnqueueIsNotCompletion (20002 ms)
+[ RUN      ] CudaApi.DeviceBufferOwnership
+[       OK ] CudaApi.DeviceBufferOwnership (3 ms)
+[ RUN      ] CudaApi.PendingCallerErrorBlocksEnqueue
+[       OK ] CudaApi.PendingCallerErrorBlocksEnqueue (104 ms)
+[----------] 6 tests from CudaApi (20387 ms total)
+
+[----------] Global test environment tear-down
+[==========] 6 tests from 1 test suite ran. (20387 ms total)
+[  PASSED  ] 6 tests.
+========= LEAK SUMMARY: 0 bytes leaked in 0 allocations
+========= ERROR SUMMARY: 0 errors

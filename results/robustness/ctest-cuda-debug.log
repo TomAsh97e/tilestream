@@ -1,0 +1,51 @@
+Test project ./build/cuda-debug
+      Start  1: tilestream.cpu.smoke
+ 1/18 Test  #1: tilestream.cpu.smoke .............   Passed    0.08 sec
+      Start  2: tilestream.cpu.sizing
+ 2/18 Test  #2: tilestream.cpu.sizing ............   Passed    0.01 sec
+      Start  3: tilestream.cpu.codec
+ 3/18 Test  #3: tilestream.cpu.codec .............   Passed    0.16 sec
+      Start  4: tilestream.cpu.fp32
+ 4/18 Test  #4: tilestream.cpu.fp32 ..............   Passed    0.02 sec
+      Start  5: tilestream.io.tiff
+ 5/18 Test  #5: tilestream.io.tiff ...............   Passed    0.00 sec
+      Start  6: tilestream.cpu.numerics
+ 6/18 Test  #6: tilestream.cpu.numerics ..........   Passed    0.11 sec
+      Start  7: tilestream.cpu.robustness
+ 7/18 Test  #7: tilestream.cpu.robustness ........   Passed   13.73 sec
+      Start  8: tilestream.cpu.fuzz_parse
+ 8/18 Test  #8: tilestream.cpu.fuzz_parse ........   Passed    0.02 sec
+      Start  9: tilestream.cpu.fuzz_mutation
+ 9/18 Test  #9: tilestream.cpu.fuzz_mutation .....   Passed    0.19 sec
+      Start 10: tilestream.cuda.headers
+10/18 Test #10: tilestream.cuda.headers ..........   Passed    0.00 sec
+      Start 11: tilestream.cuda.device
+11/18 Test #11: tilestream.cuda.device ...........   Passed    0.20 sec
+      Start 12: tilestream.cuda.encoder
+12/18 Test #12: tilestream.cuda.encoder ..........   Passed    1.01 sec
+      Start 13: tilestream.cuda.decoder
+13/18 Test #13: tilestream.cuda.decoder ..........   Passed    1.06 sec
+      Start 14: tilestream.cuda.api
+14/18 Test #14: tilestream.cuda.api ..............   Passed    0.31 sec
+      Start 15: tilestream.cuda.loading
+15/18 Test #15: tilestream.cuda.loading ..........   Passed    0.18 sec
+      Start 16: tilestream.cuda.calibration
+16/18 Test #16: tilestream.cuda.calibration ......   Passed    0.41 sec
+      Start 17: tilestream.cuda.numerics
+17/18 Test #17: tilestream.cuda.numerics .........   Passed    0.36 sec
+      Start 18: tilestream.cuda.robustness
+18/18 Test #18: tilestream.cuda.robustness .......   Passed    4.79 sec
+
+100% tests passed, 0 tests failed out of 18
+
+Label Time Summary:
+calibration    =   0.41 sec*proc (1 test)
+codec          =   2.24 sec*proc (4 tests)
+cpu            =  14.32 sec*proc (9 tests)
+cuda           =   8.30 sec*proc (8 tests)
+headers        =   0.00 sec*proc (1 test)
+numerics       =   0.47 sec*proc (2 tests)
+robustness     =  18.73 sec*proc (4 tests)
+tiff           =   0.00 sec*proc (1 test)
+
+Total Test time (real) =  22.63 sec
