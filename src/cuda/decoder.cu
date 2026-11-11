@@ -56,6 +56,14 @@ template <typename Sample> __device__ std::uint32_t combine(std::uint32_t a, std
     }
 }
 
+template <typename Sample> __device__ std::uint32_t uncombine(std::uint32_t a, std::uint32_t b) {
+    if constexpr (sizeof(Sample) == 2) {
+        return a - b;
+    } else {
+        return a ^ b;
+    }
+}
+
 // Every lane of the warp must call this, including lanes past the end of a row.
 template <typename Sample> __device__ std::uint32_t warp_scan(std::uint32_t value) {
     const auto lane = threadIdx.x % 32;
@@ -99,6 +107,66 @@ __device__ bool walk_rows(const std::uint32_t *payload, std::uint32_t words, std
         cursor += 2 + packed;
     }
     return cursor == words;
+}
+
+template <typename Output, std::uint32_t Size> struct alignas(Size * sizeof(Output)) Group {
+    Output values[Size];
+};
+
+// One bitpacked row: every lane scans a group of Size consecutive columns in registers, so the
+// warp scans one total per lane, and an aligned group is written with one vector store. x and y
+// place column 0 of the row in the output region; line points at column left of the row.
+template <std::uint32_t Size, typename Sample, bool Calibrated, typename Output>
+__device__ void decode_row(const std::uint32_t *words, std::uint32_t seed, std::uint32_t bits,
+                           std::uint32_t width, std::uint32_t left, std::uint32_t right,
+                           Output *line, const Calibration &calibration, std::uint64_t x,
+                           std::uint64_t y) {
+    const auto lane = threadIdx.x % 32;
+    std::uint32_t carry = 0;
+    for (std::uint32_t base = 0; base < right; base += 32 * Size) {
+        const auto first = base + lane * Size;
+        std::uint32_t prefix[Size];
+        std::uint32_t total = 0;
+#pragma unroll
+        for (std::uint32_t k = 0; k < Size; ++k) {
+            const auto col = first + k;
+            std::uint32_t item = 0;
+            if (col == 0) {
+                item = seed;
+            } else if (col < width) {
+                item = term<Sample>(unpack(words, col - 1, bits));
+            }
+            total = combine<Sample>(total, item);
+            prefix[k] = total;
+        }
+        const auto inclusive = warp_scan<Sample>(total);
+        const auto before = combine<Sample>(carry, uncombine<Sample>(inclusive, total));
+        carry = combine<Sample>(carry, __shfl_sync(full_mask, inclusive, 31));
+        Group<Output, Size> values;
+#pragma unroll
+        for (std::uint32_t k = 0; k < Size; ++k) {
+            // The uint16 scan is modulo 65536 only after this narrowing.
+            const auto sample = static_cast<Sample>(combine<Sample>(before, prefix[k]));
+            if constexpr (Calibrated) {
+                values.values[k] = detail::calibrate(detail::sample_value<Sample>(sample),
+                                                     calibration, x + first + k, y);
+            } else {
+                values.values[k] = sample;
+            }
+        }
+        if (first >= left && first + Size <= right &&
+            reinterpret_cast<std::uintptr_t>(line + (first - left)) % sizeof(Group<Output, Size>) ==
+                0) {
+            *reinterpret_cast<Group<Output, Size> *>(line + (first - left)) = values;
+        } else {
+#pragma unroll
+            for (std::uint32_t k = 0; k < Size; ++k) {
+                if (first + k >= left && first + k < right) {
+                    line[first + k - left] = values.values[k];
+                }
+            }
+        }
+    }
 }
 
 // The calibrated variant writes FP32 output computed from each decoded sample.
@@ -181,7 +249,6 @@ __global__ void __launch_bounds__(block_threads)
     const auto right = roi.x + roi.width < g.x + g.width
                            ? static_cast<std::uint32_t>(roi.x + roi.width - g.x)
                            : g.width;
-    const auto from = tile.mode == TileMode::predict_bitpack ? 0 : left / 32 * 32;
     using Output = std::conditional_t<Calibrated, float, Sample>;
     auto *output = static_cast<std::uint8_t *>(image.output.data);
     const auto lane = threadIdx.x % 32;
@@ -190,21 +257,27 @@ __global__ void __launch_bounds__(block_threads)
         auto *line =
             reinterpret_cast<Output *>(output + (g.y + row - roi.y) * image.output.pitch_bytes +
                                        (g.x + left - roi.x) * sizeof(Output));
-        std::uint32_t carry = 0;
-        for (auto base = from; base < right; base += 32) {
+        if (tile.mode == TileMode::predict_bitpack) {
+            // The group size keeps every lane busy on narrow tiles.
+            const auto *words = payload + rows.starts[row];
+            const auto x = g.x - roi.x;
+            const auto y = g.y + row - roi.y;
+            if (g.width > 64) {
+                decode_row<4, Sample, Calibrated>(words, rows.seeds[row], rows.widths[row], g.width,
+                                                  left, right, line, image.calibration, x, y);
+            } else if (g.width > 32) {
+                decode_row<2, Sample, Calibrated>(words, rows.seeds[row], rows.widths[row], g.width,
+                                                  left, right, line, image.calibration, x, y);
+            } else {
+                decode_row<1, Sample, Calibrated>(words, rows.seeds[row], rows.widths[row], g.width,
+                                                  left, right, line, image.calibration, x, y);
+            }
+            continue;
+        }
+        for (auto base = left / 32 * 32; base < right; base += 32) {
             const auto col = base + lane;
             std::uint32_t value = 0;
-            if (tile.mode == TileMode::predict_bitpack) {
-                std::uint32_t item = 0;
-                if (col == 0) {
-                    item = rows.seeds[row];
-                } else if (col < g.width) {
-                    item =
-                        term<Sample>(unpack(payload + rows.starts[row], col - 1, rows.widths[row]));
-                }
-                value = combine<Sample>(carry, warp_scan<Sample>(item));
-                carry = __shfl_sync(full_mask, value, 31);
-            } else if (col < right && tile.mode == TileMode::raw) {
+            if (col < right && tile.mode == TileMode::raw) {
                 const auto index = row * g.width + col;
                 if constexpr (sizeof(Sample) == 2) {
                     value = payload[index / 2] >> (index % 2 * 16) & 65535U;
@@ -215,7 +288,6 @@ __global__ void __launch_bounds__(block_threads)
                 value = payload[0];
             }
             if (col >= left && col < right) {
-                // The uint16 scan is modulo 65536 only after this narrowing.
                 const auto sample = static_cast<Sample>(value);
                 if constexpr (Calibrated) {
                     line[col - left] =
