@@ -36,6 +36,20 @@ inline bool supported_tile(TileShape tile) noexcept {
            (tile.width == 256 && tile.height == 16);
 }
 
+// Byte offsets of the workspace regions described in docs/api.md.
+struct WorkspaceLayout {
+    std::uint64_t residuals = 0;
+    std::uint64_t rows = 0;
+    std::uint64_t tiles = 0;
+    std::uint64_t lengths = 0;
+    std::uint64_t offsets = 0;
+    std::uint64_t images = 0;
+    std::uint64_t temp = 0;
+    std::uint64_t total = 0;
+};
+
+[[nodiscard]] Status workspace_layout(const WorkspaceSpec &spec, WorkspaceLayout &layout) noexcept;
+
 inline Status pixel_size(const ImageSpec &image, std::uint64_t &bytes) noexcept {
     if (image.type != PixelType::uint16 && image.type != PixelType::float32) {
         return Status::unsupported_type;

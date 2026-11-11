@@ -5,6 +5,8 @@ project(TileStream VERSION 0.1.0 LANGUAGES CXX)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+find_package(TIFF 4.5.1 REQUIRED)
+
 option(TILESTREAM_ENABLE_CUDA "Build CUDA support" OFF)
 option(TILESTREAM_ENABLE_NVCOMP "Build the optional nvCOMP adapter" OFF)
 option(TILESTREAM_BUILD_TESTS "Build tests" ON)
@@ -54,7 +56,14 @@ configure_file(
     @ONLY
 )
 
-set(TILESTREAM_SOURCES src/info.cpp src/sizing.cpp)
+set(TILESTREAM_SOURCES
+    src/info.cpp
+    src/sizing.cpp
+    src/cpu/parser.cpp
+    src/cpu/encoder.cpp
+    src/cpu/decoder.cpp
+    src/io/tiff.cpp
+)
 if(TILESTREAM_ENABLE_CUDA)
     list(APPEND TILESTREAM_SOURCES src/cuda/device_info.cu)
 endif()
@@ -75,12 +84,10 @@ target_include_directories(tilestream_library
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 tilestream_enable_warnings(tilestream_library)
+target_link_libraries(tilestream_library PRIVATE TIFF::TIFF)
 
 if(TILESTREAM_ENABLE_CUDA)
     target_link_libraries(tilestream_library PUBLIC CUDA::cudart)
-endif()
-if(TILESTREAM_ENABLE_NVCOMP)
-    target_link_libraries(tilestream_library PRIVATE nvcomp::nvcomp)
 endif()
 
 add_executable(tilestream_cli tools/tilestream.cpp)
@@ -103,6 +110,37 @@ if(TILESTREAM_BUILD_TESTS)
     add_test(NAME tilestream.cpu.sizing COMMAND tilestream_sizing_tests)
     set_tests_properties(tilestream.cpu.sizing PROPERTIES LABELS "cpu")
 
+    find_package(GTest 1.14.0 EXACT CONFIG REQUIRED)
+    add_executable(tilestream_cpu_codec_tests tests/cpu_codec_test.cpp)
+    target_link_libraries(tilestream_cpu_codec_tests PRIVATE TileStream::tilestream GTest::gtest_main)
+    target_compile_definitions(tilestream_cpu_codec_tests PRIVATE
+        TILESTREAM_GOLDEN_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/golden"
+    )
+    tilestream_enable_warnings(tilestream_cpu_codec_tests)
+    add_test(NAME tilestream.cpu.codec COMMAND tilestream_cpu_codec_tests)
+    set_tests_properties(tilestream.cpu.codec PROPERTIES LABELS "cpu")
+
+    add_executable(tilestream_fp32_codec_tests tests/fp32_codec_test.cpp)
+    target_link_libraries(tilestream_fp32_codec_tests PRIVATE TileStream::tilestream GTest::gtest_main)
+    target_compile_definitions(tilestream_fp32_codec_tests PRIVATE
+        TILESTREAM_GOLDEN_DIR="${CMAKE_CURRENT_SOURCE_DIR}/tests/golden"
+    )
+    tilestream_enable_warnings(tilestream_fp32_codec_tests)
+    add_test(NAME tilestream.cpu.fp32 COMMAND tilestream_fp32_codec_tests)
+    set_tests_properties(tilestream.cpu.fp32 PROPERTIES LABELS "cpu")
+
+    add_executable(tilestream_tiff_tests tests/tiff_test.cpp)
+    target_link_libraries(tilestream_tiff_tests PRIVATE TileStream::tilestream TIFF::TIFF GTest::gtest_main)
+    tilestream_enable_warnings(tilestream_tiff_tests)
+    add_test(NAME tilestream.io.tiff COMMAND tilestream_tiff_tests)
+    set_tests_properties(tilestream.io.tiff PROPERTIES LABELS "cpu;tiff")
+
+    add_executable(tilestream_tiff_interop tests/tiff_interop.cpp)
+    target_link_libraries(tilestream_tiff_interop PRIVATE TileStream::tilestream)
+    tilestream_enable_warnings(tilestream_tiff_interop)
+
+    set_tests_properties(tilestream.cpu.codec tilestream.cpu.fp32 PROPERTIES LABELS "cpu;codec")
+
     if(TILESTREAM_ENABLE_CUDA)
         add_executable(tilestream_cuda_header_tests tests/cuda_headers_test.cu)
         target_link_libraries(tilestream_cuda_header_tests PRIVATE TileStream::tilestream)
@@ -114,6 +152,7 @@ if(TILESTREAM_BUILD_TESTS)
         tilestream_enable_warnings(tilestream_cuda_tests)
         add_test(NAME tilestream.cuda.device COMMAND tilestream_cuda_tests)
         set_tests_properties(tilestream.cuda.device PROPERTIES LABELS "cuda" SKIP_RETURN_CODE 77)
+
     endif()
 endif()
 

@@ -42,10 +42,13 @@ Status read_header(ConstBytes source, Layout &layout) noexcept {
         !zero_bytes(data + format::header::reserved, 2)) {
         return Status::malformed_data;
     }
-    if (data[format::header::pixel_type] != static_cast<std::uint8_t>(PixelType::uint16)) {
+    const auto pixel_type = data[format::header::pixel_type];
+    if (pixel_type != static_cast<std::uint8_t>(PixelType::uint16) &&
+        pixel_type != static_cast<std::uint8_t>(PixelType::float32)) {
         return Status::unsupported_type;
     }
-    layout.image = {PixelType::uint16, read_le<std::uint32_t>(data + format::header::width),
+    layout.image = {static_cast<PixelType>(pixel_type),
+                    read_le<std::uint32_t>(data + format::header::width),
                     read_le<std::uint32_t>(data + format::header::height)};
     layout.tile = {read_le<std::uint16_t>(data + format::header::tile_width),
                    read_le<std::uint16_t>(data + format::header::tile_height)};
@@ -60,10 +63,10 @@ Status read_header(ConstBytes source, Layout &layout) noexcept {
     if (status != Status::success) {
         return status;
     }
-    layout.columns = layout.image.width / layout.tile.width +
-                     (layout.image.width % layout.tile.width != 0);
-    const std::uint64_t rows = layout.image.height / layout.tile.height +
-                               (layout.image.height % layout.tile.height != 0);
+    layout.columns =
+        layout.image.width / layout.tile.width + (layout.image.width % layout.tile.width != 0);
+    const std::uint64_t rows =
+        layout.image.height / layout.tile.height + (layout.image.height % layout.tile.height != 0);
     std::uint64_t index_bytes = 0;
     if (!detail::multiply_size(layout.columns, rows, layout.count) ||
         !detail::multiply_size(layout.count, format::index_entry_bytes, index_bytes) ||
@@ -83,6 +86,8 @@ Status read_header(ConstBytes source, Layout &layout) noexcept {
 Status walk_tiles(ConstBytes source, const Layout &layout, std::uint64_t &segment_count,
                   ImageMetadata *metadata) noexcept {
     const auto *data = static_cast<const std::uint8_t *>(source.data);
+    const std::uint64_t sample_bytes = layout.image.type == PixelType::uint16 ? 2 : 4;
+    const std::uint32_t maximum_bits = layout.image.type == PixelType::uint16 ? 16 : 32;
     std::uint64_t expected_offset = layout.payload;
     segment_count = 0;
     for (std::uint64_t i = 0; i < layout.count; ++i) {
@@ -93,7 +98,7 @@ Status walk_tiles(ConstBytes source, const Layout &layout, std::uint64_t &segmen
         const auto height = std::min<std::uint64_t>(layout.tile.height, layout.image.height - y);
         const auto offset = read_le<std::uint64_t>(entry + format::entry::offset);
         const auto length = read_le<std::uint64_t>(entry + format::entry::length);
-        const auto raw_bytes = width * height * 2;
+        const auto raw_bytes = width * height * sample_bytes;
         const auto raw_padded = (raw_bytes + 3) / 4 * 4;
         if (entry[format::entry::mode] > static_cast<std::uint8_t>(TileMode::predict_bitpack) ||
             !zero_bytes(entry + format::entry::reserved, 3) ||
@@ -112,7 +117,8 @@ Status walk_tiles(ConstBytes source, const Layout &layout, std::uint64_t &segmen
                 return Status::malformed_data;
             }
         } else if (mode == TileMode::constant) {
-            if (length != 4 || !zero_bytes(payload + 2, 2)) {
+            if (length != 4 ||
+                (layout.image.type == PixelType::uint16 && !zero_bytes(payload + 2, 2))) {
                 return Status::malformed_data;
             }
         } else {
@@ -124,7 +130,8 @@ Status walk_tiles(ConstBytes source, const Layout &layout, std::uint64_t &segmen
                 const auto *descriptor = payload + cursor;
                 const auto seed = read_le<std::uint32_t>(descriptor + format::segment::seed);
                 const auto bits = descriptor[format::segment::bit_width];
-                if (seed > UINT16_MAX || bits > 16 || (width == 1 && bits != 0) ||
+                if ((layout.image.type == PixelType::uint16 && seed > UINT16_MAX) ||
+                    bits > maximum_bits || (width == 1 && bits != 0) ||
                     !zero_bytes(descriptor + format::segment::reserved, 3)) {
                     return Status::malformed_data;
                 }
@@ -151,8 +158,12 @@ Status walk_tiles(ConstBytes source, const Layout &layout, std::uint64_t &segmen
             }
         }
         if (metadata != nullptr) {
-            metadata->tiles[i] = {mode, static_cast<std::uint16_t>(width),
-                                  static_cast<std::uint16_t>(height), offset, length, first_segment};
+            metadata->tiles[i] = {mode,
+                                  static_cast<std::uint16_t>(width),
+                                  static_cast<std::uint16_t>(height),
+                                  offset,
+                                  length,
+                                  first_segment};
         }
         expected_offset += length;
     }
@@ -173,7 +184,8 @@ Status metadata_size(std::uint64_t tiles, std::uint64_t segments, std::uint64_t 
 
 } // namespace
 
-Status parse_metadata(ConstBytes source, const ParseLimits &limits, ImageMetadata &metadata) noexcept {
+Status parse_metadata(ConstBytes source, const ParseLimits &limits,
+                      ImageMetadata &metadata) noexcept {
     const auto range_status = cpu::detail::byte_range(source.data, source.size);
     if (range_status != Status::success) {
         return range_status;

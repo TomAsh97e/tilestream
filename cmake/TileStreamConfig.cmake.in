@@ -1,6 +1,7 @@
 @PACKAGE_INIT@
 
 include(CMakeFindDependencyMacro)
+find_dependency(TIFF 4.5.1)
 if(@TILESTREAM_CONFIG_NEEDS_CUDA@)
     find_dependency(CUDAToolkit 13.0)
 endif()

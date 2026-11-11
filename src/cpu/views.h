@@ -29,10 +29,7 @@ inline bool overlaps(const void *a, std::uint64_t a_size, const void *b,
     return a_size != 0 && b_size != 0 && first < second + b_size && second < first + a_size;
 }
 
-inline Status uint16_view(ConstImageView view) noexcept {
-    if (view.image.type != PixelType::uint16) {
-        return Status::unsupported_type;
-    }
+inline Status codec_view(ConstImageView view) noexcept {
     std::uint64_t span = 0;
     const auto status = image_span(view.image, view.pitch_bytes, span);
     if (status != Status::success) {
@@ -42,7 +39,8 @@ inline Status uint16_view(ConstImageView view) noexcept {
     if (range_status != Status::success) {
         return range_status;
     }
-    if (view.data == nullptr || reinterpret_cast<std::uintptr_t>(view.data) % 2 != 0) {
+    const std::uintptr_t alignment = view.image.type == PixelType::uint16 ? 2 : 4;
+    if (view.data == nullptr || reinterpret_cast<std::uintptr_t>(view.data) % alignment != 0) {
         return Status::invalid_argument;
     }
     return span <= view.capacity_bytes ? Status::success : Status::buffer_too_small;

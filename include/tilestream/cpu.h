@@ -4,7 +4,7 @@
 
 namespace tilestream::cpu {
 
-// T05 supports uint16 only. Buffers are caller-owned and must not overlap.
+// Buffers are caller-owned and must not overlap. FP32 is handled as exact bit words.
 // Compression requires compress_bound capacity; failures leave outputs unchanged.
 [[nodiscard]] Status compress(ConstImageView input, TileShape tile, MutableBytes output,
                               std::uint64_t &bytes_written) noexcept;

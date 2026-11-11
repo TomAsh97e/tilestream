@@ -59,38 +59,55 @@ Status compress_bound(const ImageSpec &image, TileShape tile, std::uint64_t &byt
 }
 
 Status workspace_size(const WorkspaceSpec &spec, std::uint64_t &bytes) noexcept {
+    detail::WorkspaceLayout layout;
+    const auto status = detail::workspace_layout(spec, layout);
+    if (status == Status::success) {
+        bytes = layout.total;
+    }
+    return status;
+}
+
+namespace detail {
+
+Status workspace_layout(const WorkspaceSpec &spec, WorkspaceLayout &layout) noexcept {
     if (spec.image_count == 0) {
         if (spec.tile_count != 0 || spec.scan_temp_bytes != 0) {
             return Status::invalid_argument;
         }
-        bytes = 0;
+        layout = {};
         return Status::success;
     }
-    if (!detail::supported_tile(spec.tile) || spec.tile_count < spec.image_count) {
+    if (!supported_tile(spec.tile) || spec.tile_count < spec.image_count) {
         return Status::invalid_argument;
     }
     if (spec.image_count > UINT32_MAX || spec.tile_count > max_window_tiles) {
         return Status::resource_limit;
     }
 
+    WorkspaceLayout result;
     std::uint64_t total = 0;
-    const auto append = [&total](std::uint64_t count, std::uint64_t size) {
+    const auto append = [&total](std::uint64_t count, std::uint64_t size, std::uint64_t &offset) {
         std::uint64_t region = 0;
-        return detail::multiply_size(count, size, region) &&
-               detail::align_size(region, workspace_alignment, region) &&
-               detail::add_size(total, region, total);
+        offset = total;
+        return multiply_size(count, size, region) &&
+               align_size(region, workspace_alignment, region) && add_size(total, region, total);
     };
 
     // Regions are independent and may not borrow another region's padding.
-    if (!append(spec.tile_count, 4096 * 4) ||
-        !append(spec.tile_count, std::uint64_t{spec.tile.height} * format::segment_header_bytes) ||
-        !append(spec.tile_count, 32) || !append(spec.tile_count, 8) ||
-        !append(spec.tile_count + 1, 8) || !append(spec.image_count, 16) ||
-        !append(spec.scan_temp_bytes, 1)) {
+    if (!append(spec.tile_count, 4096 * 4, result.residuals) ||
+        !append(spec.tile_count, std::uint64_t{spec.tile.height} * format::segment_header_bytes,
+                result.rows) ||
+        !append(spec.tile_count, 32, result.tiles) || !append(spec.tile_count, 8, result.lengths) ||
+        !append(spec.tile_count + 1, 8, result.offsets) ||
+        !append(spec.image_count, 16, result.images) ||
+        !append(spec.scan_temp_bytes, 1, result.temp)) {
         return Status::size_overflow;
     }
-    bytes = total;
+    result.total = total;
+    layout = result;
     return Status::success;
 }
+
+} // namespace detail
 
 } // namespace tilestream

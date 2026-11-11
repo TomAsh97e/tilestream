@@ -2,7 +2,7 @@
 
 ## Scope and conventions
 
-One `.tsc` file stores one nonempty, single-channel image. A batch consists of independent files, not concatenated images in one container. V1 accepts only tile geometries `(width, height)` of `(128, 32)`, `(64, 64)`, and `(256, 16)`. The default is `(128, 32)`. These choices were approved before T04 implementation.
+One `.tsc` file stores one nonempty, single-channel image. A batch consists of independent files, not concatenated images in one container. V1 accepts only tile geometries `(width, height)` of `(128, 32)`, `(64, 64)`, and `(256, 16)`. The default is `(128, 32)`.
 
 All integers are unsigned, fixed-width, little-endian unless an intermediate mathematical quantity is explicitly signed. FP32 pixels are serialized as their exact IEEE 754 binary32 words, never converted through a floating-point computation. Byte offsets are relative to the start of the file unless stated otherwise.
 

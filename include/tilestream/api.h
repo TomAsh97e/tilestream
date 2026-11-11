@@ -38,7 +38,7 @@ struct ParseLimits {
     std::uint64_t metadata_bytes = max_bytes;
 };
 
-// T04 declaration; parser implementation belongs to the CPU codec stages.
+// Validates complete uint16 and bit-exact FP32 archives before decoding.
 [[nodiscard]] Status parse_metadata(ConstBytes source, const ParseLimits &limits,
                                     ImageMetadata &metadata) noexcept;
 

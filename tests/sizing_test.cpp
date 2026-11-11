@@ -186,6 +186,20 @@ void test_workspace() {
     CHECK(workspace_size({std::uint64_t{UINT32_MAX} + 1, std::uint64_t{UINT32_MAX} + 1, {}, 0},
                          bytes) == Status::resource_limit);
     CHECK(bytes == 123);
+
+    // Region offsets used by the CUDA encoder: residuals, rows, tiles, lengths, offsets, carry.
+    detail::WorkspaceLayout layout;
+    CHECK(detail::workspace_layout({3, 5, {64, 64}, 300}, layout) == Status::success);
+    CHECK(layout.residuals == 0);
+    CHECK(layout.rows == 5 * 4096 * 4);
+    CHECK(layout.tiles == layout.rows + 5 * 64 * 8);
+    CHECK(layout.lengths == layout.tiles + 256);
+    CHECK(layout.offsets == layout.lengths + 256);
+    CHECK(layout.images == layout.offsets + 256);
+    CHECK(layout.temp == layout.images + 256);
+    CHECK(layout.total == layout.temp + 512);
+    CHECK(workspace_size({3, 5, {64, 64}, 300}, bytes) == Status::success);
+    CHECK(bytes == layout.total);
 }
 
 void test_layout_constants() {

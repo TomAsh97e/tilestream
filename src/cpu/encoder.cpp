@@ -7,37 +7,55 @@
 #include <algorithm>
 #include <array>
 #include <cstring>
+#include <limits>
 
 namespace tilestream::cpu {
 namespace {
 
+static_assert(sizeof(float) == 4 && std::numeric_limits<float>::is_iec559);
+
 struct TileAnalysis {
-    std::array<std::uint16_t, 4096> samples{};
-    std::array<std::uint16_t, 4096> residuals{};
+    std::array<std::uint32_t, 4096> samples{};
+    std::array<std::uint32_t, 4096> residuals{};
     std::array<std::uint8_t, 64> widths{};
     TileMode mode = TileMode::raw;
     std::uint64_t length = 0;
 };
 
+std::uint32_t load_sample(const std::uint8_t *source, PixelType type) noexcept {
+    std::uint32_t sample = 0;
+    const std::size_t size = type == PixelType::uint16 ? 2 : 4;
+    std::memcpy(&sample, source, size);
+    return sample;
+}
+
+std::uint32_t uint16_residual(std::uint32_t current, std::uint32_t previous) noexcept {
+    const auto delta = (current - previous) & std::uint32_t{65535};
+    const auto signed_delta =
+        delta < 32768 ? static_cast<std::int32_t>(delta) : static_cast<std::int32_t>(delta) - 65536;
+    return static_cast<std::uint32_t>(signed_delta >= 0 ? signed_delta * 2 : -signed_delta * 2 - 1);
+}
+
 void analyze(ConstImageView input, std::uint64_t x, std::uint64_t y, std::uint16_t width,
              std::uint16_t height, TileAnalysis &tile) noexcept {
     const auto *data = static_cast<const std::uint8_t *>(input.data);
+    const std::uint64_t sample_bytes = input.image.type == PixelType::uint16 ? 2 : 4;
     bool constant = true;
     std::uint64_t predictive_bytes = 0;
     for (std::uint32_t row = 0; row < height; ++row) {
         std::uint32_t combined = 0;
         for (std::uint32_t col = 0; col < width; ++col) {
             const auto index = row * width + col;
-            std::memcpy(&tile.samples[index], data + (y + row) * input.pitch_bytes + (x + col) * 2, 2);
+            tile.samples[index] = load_sample(
+                data + (y + row) * input.pitch_bytes + (x + col) * sample_bytes, input.image.type);
             constant = constant && tile.samples[index] == tile.samples[0];
             if (col != 0) {
-                const auto delta = (std::uint32_t{tile.samples[index]} - tile.samples[index - 1]) &
-                                   std::uint32_t{65535};
-                const auto signed_delta = delta < 32768 ? static_cast<std::int32_t>(delta)
-                                                        : static_cast<std::int32_t>(delta) - 65536;
-                const auto zigzag = signed_delta >= 0 ? signed_delta * 2 : -signed_delta * 2 - 1;
-                tile.residuals[index] = static_cast<std::uint16_t>(zigzag);
-                combined |= static_cast<std::uint32_t>(zigzag);
+                const auto residual =
+                    input.image.type == PixelType::uint16
+                        ? uint16_residual(tile.samples[index], tile.samples[index - 1])
+                        : tile.samples[index] ^ tile.samples[index - 1];
+                tile.residuals[index] = residual;
+                combined |= residual;
             }
         }
         std::uint8_t bits = 0;
@@ -49,7 +67,7 @@ void analyze(ConstImageView input, std::uint64_t x, std::uint64_t y, std::uint16
         predictive_bytes += 8 + ((std::uint64_t{width - 1U} * bits + 31) / 32) * 4;
     }
     tile.mode = TileMode::raw;
-    tile.length = ((std::uint64_t{width} * height * 2 + 3) / 4) * 4;
+    tile.length = ((std::uint64_t{width} * height * sample_bytes + 3) / 4) * 4;
     if (constant && 4 < tile.length) {
         tile.mode = TileMode::constant;
         tile.length = 4;
@@ -60,18 +78,28 @@ void analyze(ConstImageView input, std::uint64_t x, std::uint64_t y, std::uint16
     }
 }
 
-void write_payload(std::uint8_t *output, const TileAnalysis &tile, std::uint16_t width,
-                   std::uint16_t height) noexcept {
+void write_payload(std::uint8_t *output, const TileAnalysis &tile, PixelType type,
+                   std::uint16_t width, std::uint16_t height) noexcept {
     std::memset(output, 0, static_cast<std::size_t>(tile.length));
     if (tile.mode == TileMode::raw) {
+        const std::uint64_t sample_bytes = type == PixelType::uint16 ? 2 : 4;
         for (std::uint32_t i = 0; i < std::uint32_t{width} * height; ++i) {
-            detail::write_le(output + i * 2, tile.samples[i]);
+            if (type == PixelType::uint16) {
+                detail::write_le(output + i * sample_bytes,
+                                 static_cast<std::uint16_t>(tile.samples[i]));
+            } else {
+                detail::write_le(output + i * sample_bytes, tile.samples[i]);
+            }
         }
     } else if (tile.mode == TileMode::constant) {
-        detail::write_le(output, tile.samples[0]);
+        if (type == PixelType::uint16) {
+            detail::write_le(output, static_cast<std::uint16_t>(tile.samples[0]));
+        } else {
+            detail::write_le(output, tile.samples[0]);
+        }
     } else {
         for (std::uint32_t row = 0; row < height; ++row) {
-            detail::write_le(output, std::uint32_t{tile.samples[row * width]});
+            detail::write_le(output, tile.samples[row * width]);
             const auto bits = tile.widths[row];
             output[format::segment::bit_width] = bits;
             output += format::segment_header_bytes;
@@ -80,7 +108,7 @@ void write_payload(std::uint8_t *output, const TileAnalysis &tile, std::uint16_t
                 const auto residual = tile.residuals[row * width + col];
                 for (std::uint32_t bit = 0; bit < bits; ++bit) {
                     const auto position = (col - 1) * bits + bit;
-                    const auto value = (std::uint32_t{residual} >> bit) & 1U;
+                    const auto value = (residual >> bit) & 1U;
                     output[position / 8] |= static_cast<std::uint8_t>(value << (position % 8));
                 }
             }
@@ -95,8 +123,9 @@ void write_header(std::uint8_t *output, ImageSpec image, TileShape tile, std::ui
     std::copy(format::magic.begin(), format::magic.end(), output);
     detail::write_le(output + format::header::version_major, format::major_version);
     detail::write_le(output + format::header::version_minor, format::minor_version);
-    detail::write_le(output + format::header::size, static_cast<std::uint16_t>(format::header_bytes));
-    output[format::header::pixel_type] = static_cast<std::uint8_t>(PixelType::uint16);
+    detail::write_le(output + format::header::size,
+                     static_cast<std::uint16_t>(format::header_bytes));
+    output[format::header::pixel_type] = static_cast<std::uint8_t>(image.type);
     detail::write_le(output + format::header::width, image.width);
     detail::write_le(output + format::header::height, image.height);
     detail::write_le(output + format::header::tile_width, tile.width);
@@ -114,7 +143,7 @@ void write_header(std::uint8_t *output, ImageSpec image, TileShape tile, std::ui
 
 Status compress(ConstImageView input, TileShape tile, MutableBytes output,
                 std::uint64_t &bytes_written) noexcept {
-    auto status = detail::uint16_view(input);
+    auto status = detail::codec_view(input);
     if (status != Status::success) {
         return status;
     }
@@ -136,10 +165,10 @@ Status compress(ConstImageView input, TileShape tile, MutableBytes output,
         return Status::invalid_argument;
     }
 
-    const std::uint64_t columns = input.image.width / tile.width +
-                                  (input.image.width % tile.width != 0);
-    const std::uint64_t rows = input.image.height / tile.height +
-                               (input.image.height % tile.height != 0);
+    const std::uint64_t columns =
+        input.image.width / tile.width + (input.image.width % tile.width != 0);
+    const std::uint64_t rows =
+        input.image.height / tile.height + (input.image.height % tile.height != 0);
     const auto count = columns * rows;
     auto cursor = format::header_bytes + count * format::index_entry_bytes;
     auto *data = static_cast<std::uint8_t *>(output.data);
@@ -147,8 +176,8 @@ Status compress(ConstImageView input, TileShape tile, MutableBytes output,
     for (std::uint64_t i = 0; i < count; ++i) {
         const auto x = (i % columns) * tile.width;
         const auto y = (i / columns) * tile.height;
-        const auto width = static_cast<std::uint16_t>(
-            std::min<std::uint64_t>(tile.width, input.image.width - x));
+        const auto width =
+            static_cast<std::uint16_t>(std::min<std::uint64_t>(tile.width, input.image.width - x));
         const auto height = static_cast<std::uint16_t>(
             std::min<std::uint64_t>(tile.height, input.image.height - y));
         analyze(input, x, y, width, height, analysis);
@@ -159,7 +188,7 @@ Status compress(ConstImageView input, TileShape tile, MutableBytes output,
         detail::write_le(entry + format::entry::height, height);
         detail::write_le(entry + format::entry::offset, cursor);
         detail::write_le(entry + format::entry::length, analysis.length);
-        write_payload(data + cursor, analysis, width, height);
+        write_payload(data + cursor, analysis, input.image.type, width, height);
         cursor += analysis.length;
     }
     write_header(data, input.image, tile, count, cursor);
