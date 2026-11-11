@@ -256,6 +256,44 @@ if(TILESTREAM_BUILD_BENCHMARKS)
         add_executable(tilestream_calibration_benchmark benchmarks/calibration_benchmark.cpp)
         target_link_libraries(tilestream_calibration_benchmark PRIVATE TileStream::tilestream)
         tilestream_enable_warnings(tilestream_calibration_benchmark)
+        # The baseline adapters (zstd, libtiff, nvCOMP) belong to the benchmark, not to the library.
+        find_package(PkgConfig REQUIRED)
+        pkg_check_modules(ZSTD REQUIRED IMPORTED_TARGET libzstd=1.5.5)
+        add_executable(tilestream_codec_benchmark
+            benchmarks/codec_benchmark.cpp
+            benchmarks/baselines.cpp
+            $<$<BOOL:${TILESTREAM_ENABLE_NVCOMP}>:benchmarks/nvcomp_baseline.cpp>
+        )
+        target_link_libraries(tilestream_codec_benchmark PRIVATE
+            TileStream::tilestream TIFF::TIFF PkgConfig::ZSTD
+        )
+        # The host reference of the calibration must round like the device code.
+        target_compile_options(tilestream_codec_benchmark PRIVATE -ffp-contract=off)
+        if(TILESTREAM_ENABLE_NVCOMP)
+            target_link_libraries(tilestream_codec_benchmark PRIVATE nvcomp::nvcomp CUDA::cuda_driver)
+            target_compile_definitions(tilestream_codec_benchmark PRIVATE TILESTREAM_BENCH_NVCOMP=1)
+        endif()
+        tilestream_enable_warnings(tilestream_codec_benchmark)
+        if(TILESTREAM_BUILD_TESTS)
+            # Every baseline must reproduce the calibrated reference on a small, odd-sized batch.
+            set(baselines raw_calibrate tsc_calibrate zstd_calibrate raw_file tsc_file tiff_file)
+            file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/baseline-data)
+            if(TILESTREAM_ENABLE_NVCOMP)
+                list(APPEND baselines lz4_calibrate lz4_gpu_compress lz4_gpu_decompress)
+            endif()
+            foreach(type uint16 float32)
+                foreach(scenario IN LISTS baselines)
+                    add_test(NAME tilestream.cuda.baseline.${scenario}.${type}
+                        COMMAND tilestream_codec_benchmark --scenario ${scenario} --type ${type}
+                            --width 1000 --height 777 --batch 2 --threads 3 --samples 1 --warmup 1
+                            --directory ${CMAKE_CURRENT_BINARY_DIR}/baseline-data
+                            --output ${CMAKE_CURRENT_BINARY_DIR}/baseline-data/${scenario}.${type}.json
+                    )
+                    set_tests_properties(tilestream.cuda.baseline.${scenario}.${type}
+                        PROPERTIES LABELS "cuda;baseline")
+                endforeach()
+            endforeach()
+        endif()
     endif()
 endif()
 

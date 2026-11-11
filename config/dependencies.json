@@ -11,18 +11,27 @@
     "libzstd": "1.5.5",
     "numpy": "2.2.6",
     "pydicom": "3.0.1",
-    "pytest": "8.3.5"
-  },
-  "not_installed": {
-    "googletest": "Integration is deferred until the first GoogleTest-based codec tests.",
-    "nvcomp": "The adapter remains disabled until a compatible release is installed and recorded."
+    "pytest": "8.3.5",
+    "tifffile": "2026.10.15",
+    "googletest": "1.14.0",
+    "nvcomp": "6.0.0.12"
   },
   "constraints": {
     "cmake_minimum": "3.25.0",
     "cxx_standard": "17",
     "pybind11_exact": "2.11.1",
+    "googletest_exact": "1.14.0",
     "cuda_minimum": "13.0",
     "cuda_architectures": [89],
     "external_cccl_allowed": false
+  },
+  "optional": {
+    "nvcomp": {
+      "use": "Benchmark baselines only (TILESTREAM_ENABLE_NVCOMP); the library does not link it.",
+      "source": "PyPI wheel nvidia-libnvcomp-cu13 6.0.0.12, unpacked to build/deps/nvcomp-6.0.0.12",
+      "sha256": "d1cf156f7885b9b1ad17ac0059b678e04869466f81207e51fed330f8ffbfcd5a",
+      "built_with_cudart": "13040",
+      "cmake": "-DTILESTREAM_ENABLE_NVCOMP=ON -Dnvcomp_DIR=build/deps/nvcomp-6.0.0.12/nvidia/libnvcomp/lib64/cmake/nvcomp"
+    }
   }
 }

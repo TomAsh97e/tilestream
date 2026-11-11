@@ -1,0 +1,6 @@
+$ tilestream_codec_benchmark --scenario lz4_gpu_decompress --backend hardware
+nvcompBatchedLZ4DecompressAsync failed with nvCOMP status 12
+exit code 1
+
+$ tilestream_codec_benchmark --scenario lz4_gpu_decompress --backend default (method)
+{"codec": "nvcomp_lz4", "nvcomp_version": "6.0.0.12", "nvcomp_cudart": "13040", "decompression_engine_mask": "0", "chunk_bytes": "8192", "data_type": "char", "bitshuffle": "none", "backend": "default", "chunks": "4096"}

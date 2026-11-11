@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "tilestream-benchmark-run/1",
+  "title": "TileStream benchmark run",
+  "type": "object",
+  "required": ["schema", "created", "command", "environment", "cases"],
+  "properties": {
+    "schema": { "const": "tilestream-benchmark-run/1" },
+    "created": { "type": "string" },
+    "command": { "type": "array", "items": { "type": "string" } },
+    "environment": { "$ref": "#/$defs/environment" },
+    "cases": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/case" } }
+  },
+  "$defs": {
+    "environment": {
+      "type": "object",
+      "required": ["git", "build", "host", "power", "gpu"],
+      "properties": {
+        "git": {
+          "type": "object",
+          "required": ["commit", "dirty"],
+          "properties": { "commit": { "type": "string" }, "dirty": { "type": "boolean" } }
+        },
+        "build": {
+          "type": "object",
+          "required": ["directory", "build_type", "instrumented"],
+          "properties": {
+            "build_type": { "type": "string" },
+            "instrumented": { "type": "boolean" }
+          }
+        },
+        "host": {
+          "type": "object",
+          "required": ["cpu", "logical_cpus", "os", "python"],
+          "properties": { "logical_cpus": { "type": "integer", "minimum": 1 } }
+        },
+        "power": { "type": "object", "required": ["supplies"] },
+        "gpu": {
+          "type": "object",
+          "required": ["before", "after", "processes"],
+          "properties": { "processes": { "type": "array" } }
+        }
+      }
+    },
+    "case": {
+      "type": "object",
+      "required": ["id", "args", "rounds", "result"],
+      "properties": {
+        "id": { "type": "string" },
+        "args": { "type": "array", "items": { "type": "string" } },
+        "rounds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["gpu_state", "repeat", "medians"],
+            "properties": {
+              "gpu_state": { "type": "object", "required": ["before", "after"] },
+              "repeat": { "type": "integer", "minimum": 1 },
+              "medians": { "type": "object" }
+            }
+          }
+        },
+        "result": { "$ref": "#/$defs/result" }
+      }
+    },
+    "result": {
+      "type": "object",
+      "required": ["schema", "scenario", "library", "dataset", "config", "rois", "bytes", "memory",
+                   "throughput_gbps", "timings"],
+      "properties": {
+        "schema": { "const": "tilestream-benchmark-case/1" },
+        "scenario": {
+          "enum": ["gpu_encode", "gpu_decode", "gpu_decode_roi", "gpu_decode_calibrate",
+                   "archive_roi", "cpu_encode", "cpu_decode", "raw_calibrate", "tsc_calibrate",
+                   "zstd_calibrate", "lz4_calibrate", "lz4_gpu_compress", "lz4_gpu_decompress",
+                   "raw_file", "tsc_file", "tiff_file"]
+        },
+        "method": {
+          "type": "object",
+          "required": ["codec"],
+          "properties": { "codec": { "enum": ["raw", "tilestream", "zstd", "nvcomp_lz4", "tiff_deflate"] } }
+        },
+        "library": { "type": "object", "required": ["tilestream_version", "build_type", "compiler"] },
+        "dataset": {
+          "type": "object",
+          "required": ["source", "path", "type", "width", "height", "seed"],
+          "properties": {
+            "source": { "enum": ["synthetic_detector", "file", "file_repeated"] },
+            "type": { "enum": ["uint16", "float32"] },
+            "width": { "type": "integer", "minimum": 1 },
+            "height": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "config": {
+          "type": "object",
+          "required": ["tile", "batch", "roi", "roi_seed", "samples", "warmup", "min_sample_ms",
+                       "repeat", "cpu_threads", "streams", "rounds"],
+          "properties": {
+            "tile": { "type": "array", "minItems": 2, "items": { "type": "integer" } },
+            "batch": { "type": "integer", "minimum": 1 },
+            "samples": { "type": "integer", "minimum": 1 },
+            "warmup": { "type": "integer", "minimum": 1 },
+            "repeat": { "type": "integer", "minimum": 1 },
+            "rounds": { "type": "integer", "minimum": 1 },
+            "cpu_threads": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "rois": { "type": "array", "items": { "type": "array", "minItems": 4 } },
+        "bytes": {
+          "type": "object",
+          "required": ["counter", "counted", "uncompressed", "payload", "container", "ratio_payload",
+                       "ratio_container", "transferred", "output"],
+          "properties": {
+            "counter": { "enum": ["uncompressed input bytes", "uncompressed decoded bytes"] },
+            "counted": { "type": "integer", "minimum": 1 },
+            "ratio_payload": { "type": "number" },
+            "ratio_container": { "type": "number" }
+          }
+        },
+        "memory": {
+          "type": "object",
+          "required": ["workspace_bytes", "peak_device_bytes"],
+          "properties": {
+            "workspace_bytes": { "type": "integer", "minimum": 0 },
+            "peak_device_bytes": { "type": "integer", "minimum": 0 },
+            "pinned_host_bytes": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "throughput_gbps": { "type": "object" },
+        "timings": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/series" } }
+      }
+    },
+    "series": {
+      "type": "object",
+      "required": ["name", "clock", "unit", "count", "median", "p05", "p95", "min", "max", "mean",
+                   "stdev", "samples"],
+      "properties": {
+        "name": { "type": "string" },
+        "clock": { "enum": ["cuda_event", "cuda_event_sum", "steady_clock", "derived"] },
+        "unit": { "const": "ms" },
+        "count": { "type": "integer", "minimum": 1 },
+        "samples": { "type": "array", "minItems": 1, "items": { "type": "number" } }
+      }
+    }
+  }
+}
