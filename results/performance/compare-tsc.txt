@@ -1,0 +1,5 @@
+tsc_calibrate/uint16/4096                        1.4497 ->    1.3272 ms ( -8.4%), first run [1.4156, 1.6316] OUTSIDE
+tsc_file/uint16/4096                             6.6232 ->    5.5372 ms (-16.4%), first run [6.1894, 7.0560] OUTSIDE
+tsc_calibrate/float32/4096                       3.9205 ->    3.8180 ms ( -2.6%), first run [3.8492, 4.1397] OUTSIDE
+tsc_file/float32/4096                           15.6335 ->   14.6519 ms ( -6.3%), first run [15.0663, 16.0976] OUTSIDE
+4 of 4 medians outside the first run's p05-p95 range

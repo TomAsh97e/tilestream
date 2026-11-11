@@ -1,0 +1,21 @@
+round 1 tsc_calibrate/uint16/4096                     host_end_to_end  median    1.3335 ms  p95    1.5485 ms    25.16 GB/s  ratio  2.82  x2
+round 1 tsc_file/uint16/4096                          host_end_to_end  median    5.5755 ms  p95    5.9943 ms     6.02 GB/s  ratio  2.82  x1
+round 1 tsc_calibrate/float32/4096                    host_end_to_end  median    3.8181 ms  p95    4.5573 ms    17.58 GB/s  ratio  1.67  x1
+round 1 tsc_file/float32/4096                         host_end_to_end  median   14.6575 ms  p95   15.3605 ms     4.58 GB/s  ratio  1.67  x1
+round 2 tsc_file/float32/4096                         host_end_to_end  median   14.6233 ms  p95   15.1560 ms     4.59 GB/s  ratio  1.67  x1
+round 2 tsc_calibrate/float32/4096                    host_end_to_end  median    3.8196 ms  p95    4.1701 ms    17.57 GB/s  ratio  1.67  x1
+round 2 tsc_file/uint16/4096                          host_end_to_end  median    5.5146 ms  p95    5.8476 ms     6.08 GB/s  ratio  2.82  x1
+round 2 tsc_calibrate/uint16/4096                     host_end_to_end  median    1.3258 ms  p95    1.5256 ms    25.31 GB/s  ratio  2.82  x2
+round 3 tsc_calibrate/uint16/4096                     host_end_to_end  median    1.3241 ms  p95    1.5005 ms    25.34 GB/s  ratio  2.82  x2
+round 3 tsc_file/uint16/4096                          host_end_to_end  median    5.4652 ms  p95    5.9715 ms     6.14 GB/s  ratio  2.82  x1
+round 3 tsc_calibrate/float32/4096                    host_end_to_end  median    3.8079 ms  p95    4.0534 ms    17.62 GB/s  ratio  1.67  x1
+round 3 tsc_file/float32/4096                         host_end_to_end  median   14.6281 ms  p95   15.1457 ms     4.59 GB/s  ratio  1.67  x1
+round 4 tsc_file/float32/4096                         host_end_to_end  median   14.7287 ms  p95   15.2990 ms     4.56 GB/s  ratio  1.67  x1
+round 4 tsc_calibrate/float32/4096                    host_end_to_end  median    3.8288 ms  p95    4.2032 ms    17.53 GB/s  ratio  1.67  x1
+round 4 tsc_file/uint16/4096                          host_end_to_end  median    5.6319 ms  p95    6.0131 ms     5.96 GB/s  ratio  2.82  x1
+round 4 tsc_calibrate/uint16/4096                     host_end_to_end  median    1.3281 ms  p95    1.5616 ms    25.26 GB/s  ratio  2.82  x2
+round 5 tsc_calibrate/uint16/4096                     host_end_to_end  median    1.3235 ms  p95    1.6363 ms    25.35 GB/s  ratio  2.82  x2
+round 5 tsc_file/uint16/4096                          host_end_to_end  median    5.5372 ms  p95    5.9639 ms     6.06 GB/s  ratio  2.82  x1
+round 5 tsc_calibrate/float32/4096                    host_end_to_end  median    3.8089 ms  p95    4.0810 ms    17.62 GB/s  ratio  1.67  x1
+round 5 tsc_file/float32/4096                         host_end_to_end  median   14.6212 ms  p95   15.3148 ms     4.59 GB/s  ratio  1.67  x1
+wrote results/performance/after-tsc.json

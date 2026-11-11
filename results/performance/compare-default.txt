@@ -1,0 +1,21 @@
+gpu_encode/uint16/4096                           0.7707 ->    0.7669 ms ( -0.5%), first run [0.7603, 0.8974] ok
+gpu_decode/uint16/4096                           0.2907 ->    0.2277 ms (-21.7%), first run [0.2890, 0.2968] OUTSIDE
+gpu_decode_roi/uint16/4096/roi1024x8             0.1609 ->    0.1267 ms (-21.3%), first run [0.1595, 0.2032] OUTSIDE
+gpu_decode_calibrate/uint16/4096/roi1024x8       0.2487 ->    0.1946 ms (-21.8%), first run [0.2309, 0.2525] OUTSIDE
+archive_roi/uint16/4096/roi1024x4                1.1164 ->    0.9848 ms (-11.8%), first run [1.0989, 1.2497] OUTSIDE
+archive_roi/uint16/4096/roi256x1                 0.0562 ->    0.0553 ms ( -1.7%), first run [0.0527, 0.0594] ok
+cpu_encode/uint16/2048                          30.5956 ->   30.4409 ms ( -0.5%), first run [30.1132, 30.7990] ok
+cpu_decode/uint16/2048                           8.1623 ->    8.2861 ms ( +1.5%), first run [7.9811, 8.4474] ok
+gpu_encode/float32/4096                          1.0073 ->    1.0045 ms ( -0.3%), first run [0.9950, 1.1606] ok
+gpu_decode/float32/4096                          0.4721 ->    0.4537 ms ( -3.9%), first run [0.4678, 0.5369] OUTSIDE
+gpu_decode_roi/float32/4096/roi1024x8            0.2684 ->    0.2534 ms ( -5.6%), first run [0.2665, 0.3014] OUTSIDE
+gpu_decode_calibrate/float32/4096/roi1024x8      0.2956 ->    0.2849 ms ( -3.6%), first run [0.2944, 0.3452] OUTSIDE
+archive_roi/float32/4096/roi1024x4               2.3952 ->    2.2278 ms ( -7.0%), first run [2.3445, 2.6228] OUTSIDE
+archive_roi/float32/4096/roi256x1                0.0803 ->    0.0791 ms ( -1.4%), first run [0.0780, 0.0853] ok
+cpu_encode/float32/2048                         55.2438 ->   54.1730 ms ( -1.9%), first run [54.3299, 55.8513] OUTSIDE
+cpu_decode/float32/2048                          9.6625 ->   12.7973 ms (+32.4%), first run [9.3831, 9.9593] OUTSIDE
+gpu_encode/ct_small/x64                          0.0413 ->    0.0412 ms ( -0.1%), first run [0.0380, 0.0420] ok
+gpu_decode/ct_small/x64                          0.0281 ->    0.0199 ms (-29.1%), first run [0.0258, 0.0284] OUTSIDE
+gpu_encode/jacksboro_dem/x16                     0.1215 ->    0.1185 ms ( -2.4%), first run [0.1182, 0.1235] ok
+gpu_decode/jacksboro_dem/x16                     0.0549 ->    0.0429 ms (-21.8%), first run [0.0528, 0.0559] OUTSIDE
+12 of 20 medians outside the first run's p05-p95 range
